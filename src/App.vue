@@ -1,5 +1,20 @@
 <template>
-  <div>
-    <h1>dasda</h1>
-  </div>
+  <v-app>
+    <v-main>
+      <router-view />
+    </v-main> 
+  </v-app>
 </template>
+
+<script>
+  import { RouterView } from 'vue-router'
+
+  export default {
+    name: 'Home',
+    data() {
+      return {
+        msg: 'Welcome to Your Vue.js App'
+      }
+    }
+  }
+</script>

@@ -7,10 +7,16 @@ jobs:
     steps:
     - name: 🚚 Get latest code
       uses: actions/checkout@v3
+    - name: Use Node.js 12
+      uses: actions/setup-node@v2-beta
+      with:
+        node-version: "14.17.0"
+
     - name: 🔨 Build Project
-        run:|
-          npm install
-          npm run build
+      run: |
+        npm install
+        npm run build
+        
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:

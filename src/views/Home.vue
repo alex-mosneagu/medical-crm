@@ -39,7 +39,9 @@
     data() {
       return{
         name: 'Hello World',
-        logo: logo
+        logo: logo,
+        username: '',
+        password: ''
       }
     }
   }

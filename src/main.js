@@ -32,4 +32,16 @@ const vuetify = createVuetify({
     },
 })
 
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (true) {
+      next({ name: 'Login' })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+})
+
 createApp(App).use(router).use(vuetify).mount('#app')

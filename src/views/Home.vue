@@ -27,7 +27,7 @@
             rounded="pill"
             variant="solo"
           ></v-text-field>
-          <v-btn type="submit" class="mt-4" color="primary" value="log in">Login</v-btn>
+          <v-btn type="submit" block class="mt-4" elevation="0" rounded="pill" style="height: 45px" color="primary" value="log in">Login</v-btn>
         </form>
       </v-card>
     </v-container>

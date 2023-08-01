@@ -18,7 +18,7 @@
           </router-link>
         </div>
         <div class="item">
-          <router-link to="/">
+          <router-link to="/programari">
             <div class="icon">
               <img :src="programariIcon" alt="">
             </div>
@@ -79,7 +79,7 @@
   }
 </script>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
   section{
     background-color: #F7F7F7;
     position: absolute;
@@ -99,6 +99,9 @@
         img{
           width: 60%;
         }
+      }
+      .expand{
+        cursor: pointer;
       }
     }
     .menu{

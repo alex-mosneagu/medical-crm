@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import Login from '../views/Login.vue'
 import Dashboard from '../views/Dashboard.vue'
+import Programari from '../views/Programari.vue'
 
 
 const routes = createRouter({
@@ -10,6 +11,14 @@ const routes = createRouter({
             path: "/",
             name: "Dashboard",
             component: Dashboard,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: "/programari",
+            name: "Programari",
+            component: Programari,
             meta: {
                 requiresAuth: true
             }

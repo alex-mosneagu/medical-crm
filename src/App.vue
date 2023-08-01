@@ -23,4 +23,9 @@
   body{
     font-family: 'Poppins', sans-serif;
   }
+  .container-hero{
+    margin: 10px;
+    width: calc(100% - 310px);
+    margin-left: auto;
+  }
 </style>

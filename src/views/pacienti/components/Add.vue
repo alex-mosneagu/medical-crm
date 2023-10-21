@@ -62,7 +62,7 @@
     name: 'Add',
     data() {
       return{
-        dialog: true
+        dialog: false
       }
     }
   }

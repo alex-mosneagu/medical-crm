@@ -28,4 +28,8 @@
     width: calc(100% - 310px);
     margin-left: auto;
   }
+
+  .text-normal {
+    text-transform: unset !important;
+  }
 </style>

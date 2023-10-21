@@ -36,6 +36,9 @@
             right: 'timeGridDay, dayGridWeek, dayGridMonth'
           },
           selectable: true,
+          events: [
+            { title: 'Progrmare 1', start: new Date() }
+          ]
         }
       }
     }

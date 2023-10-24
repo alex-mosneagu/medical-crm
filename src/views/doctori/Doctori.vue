@@ -4,7 +4,7 @@
   <section class="container-hero">
     <h5 class="text-primary mb-4">Doctori</h5>
     <div class="filters mb-6">
-      <add />
+      <add @refresh="getData" />
     </div>
     <v-row>
       <v-col v-for="doctor in doctori" cols="3">

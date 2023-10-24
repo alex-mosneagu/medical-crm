@@ -86,6 +86,7 @@
         axios.post('http://192.168.1.130/api/doctori/', this.payload)
         .then((response) => {
           this.dialog = false;
+          this.$emit('refresh')
         }, (error) => {
           console.log(error);
         });

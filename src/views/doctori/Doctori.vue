@@ -1,6 +1,6 @@
 <template>
   <sidebar />
-dsa
+
   <section class="container-hero">
     <h5 class="text-primary mb-4">Doctori</h5>
     <div class="filters mb-6">

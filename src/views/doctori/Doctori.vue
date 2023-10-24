@@ -37,7 +37,7 @@
     },
     methods: {
       getData() {
-        axios.get('http://localhost/api/doctori/')
+        axios.get('http://192.168.1.130/api/doctori/')
         .then((response) => {
           this.doctori = response.data;
         }, (error) => {

@@ -83,7 +83,7 @@
     },
     methods: {
       save() {
-        axios.post('http://localhost/api/doctori/', this.payload)
+        axios.post('http://192.168.1.130/api/doctori/', this.payload)
         .then((response) => {
           this.dialog = false;
         }, (error) => {

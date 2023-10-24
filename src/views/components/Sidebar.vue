@@ -26,6 +26,14 @@
           </router-link>
         </div>
         <div class="item">
+          <router-link to="/doctori">
+            <div class="icon">
+              <img :src="pacientiIcon" alt="">
+            </div>
+            <div class="text">Doctori</div>
+          </router-link>
+        </div>
+        <div class="item">
           <router-link to="/pacienti">
             <div class="icon">
               <img :src="pacientiIcon" alt="">

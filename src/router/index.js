@@ -2,6 +2,7 @@ import {createRouter, createWebHistory} from 'vue-router'
 import Login from '../views/Login.vue'
 import Dashboard from '../views/Dashboard.vue'
 import Programari from '../views/Programari.vue'
+import Doctori from '../views/doctori/Doctori.vue'
 import Pacienti from '../views/pacienti/Pacienti.vue'
 
 const routes = createRouter({
@@ -19,6 +20,14 @@ const routes = createRouter({
             path: "/programari",
             name: "Programari",
             component: Programari,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: "/doctori",
+            name: "Doctori",
+            component: Doctori,
             meta: {
                 requiresAuth: true
             }

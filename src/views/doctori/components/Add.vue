@@ -4,7 +4,7 @@
     <v-dialog v-model="dialog" max-width="640px">
       <v-card>
         <v-card-title>
-          <span class="text-h5">Adauga pacient</span>
+          <span class="text-h5">Adauga doctor</span>
         </v-card-title>
         <v-card-text>
           <v-form ref="form">
@@ -20,6 +20,13 @@
                 <v-text-field
                   v-model="payload.prenume"
                   label="Prenume"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-text-field
+                  v-model="payload.specializare"
+                  label="Specializare"
                   required
                 ></v-text-field>
               </v-col>
@@ -67,15 +74,16 @@
         payload: {
           nume: null,
           prenume: null,
+          specializare: null,
           adresa: null,
           telefon: null,
           email: null,
-        }
+        },
       }
     },
     methods: {
       save() {
-        axios.post('http://localhost/api/pacienti/', this.payload)
+        axios.post('http://localhost/api/doctori/', this.payload)
         .then((response) => {
           this.dialog = false;
         }, (error) => {

@@ -5,7 +5,7 @@
           <v-row>
             <v-col cols="6">
               <div class="show">
-                <select name="show" id="">
+                <select v-model="show" @change="refresh">
                   <option value="8">8</option>
                   <option value="16">16</option>
                   <option value="32">32</option>
@@ -52,6 +52,20 @@
       </v-row>
     </div>
 </template>
+<script>
+  export default {
+    data() {
+      return{
+        show: 8
+      }
+    },
+    methods: {
+      refresh(){
+        this.$emit('refresh', this.show)
+      }
+    }
+  }
+</script>
 <style scoped>
   button{
     border: 1px solid #EDEDED !important;

@@ -3,7 +3,7 @@
 
   <section class="container-hero">
     <navbar />
-    <filters />
+    <filters @refresh="getData"/>
     <h5 class="text-primary mb-4">Doctori</h5>
     <div class="filters mb-6">
       <add @refresh="getData" />
@@ -39,6 +39,7 @@
       Navbar,
       Filters
     },
+    emits: ['refresh'],
     data() {
       return{
         doctori: [],
@@ -50,18 +51,19 @@
       this.getData();
     },
     methods: {
-      getData() {
+      getData(value) {
+        let take = value || 8;
         axios.get('http://192.168.1.130/api/doctori/',
         {
           params:{
-            skip: (this.page - 1) * 8,
-            take: 8,
+            skip: (this.page - 1) * take,
+            take: take,
           }
         }
         )
         .then((response) => {
           this.doctori = response.data.paginatedResults;
-          this.pagination = Math.ceil(response.data.total / 8);
+          this.pagination = Math.ceil(response.data.total / take);
         }, (error) => {
           console.log(error);
         });

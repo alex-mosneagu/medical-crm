@@ -4,6 +4,7 @@ import Dashboard from '../views/Dashboard.vue'
 import Programari from '../views/Programari.vue'
 import Doctori from '../views/doctori/Doctori.vue'
 import Pacienti from '../views/pacienti/Pacienti.vue'
+import Profile from '../views/profile/Profile.vue'
 
 const routes = createRouter({
     history: createWebHistory(),
@@ -36,6 +37,14 @@ const routes = createRouter({
             path: "/pacienti",
             name: "Pacienti",
             component: Pacienti,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: "/profilul-meu",
+            name: "Profile",
+            component: Profile,
             meta: {
                 requiresAuth: true
             }

@@ -2,6 +2,7 @@
   <sidebar />
 
   <section class="container-hero">
+    <navbar />
     <h5 class="text-primary ">Programari</h5>
     <FullCalendar 
     :options='calendarOptions'
@@ -16,13 +17,15 @@
   import timeGridPlugin from '@fullcalendar/timegrid'
   import interactionPlugin from '@fullcalendar/interaction'
   import listPlugin from '@fullcalendar/list'
+  import Navbar from './components/Navbar.vue'
 
 
   export default {
     name: 'Programari',
     components: {
       Sidebar,
-      FullCalendar
+      FullCalendar,
+      Navbar
     },
     data() {
       return{

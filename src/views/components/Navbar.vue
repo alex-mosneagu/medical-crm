@@ -1,0 +1,66 @@
+<template>
+    <nav class="mb-10">
+      <div class="w-75">
+        <input type="search" placeholder="Search doctors by name or title">
+      </div>
+      <div class="notificari ml-6">
+        <img src="../../images/icons/notificari.png" alt="">
+      </div>
+      <div class="split mx-8"></div>
+      <div class="profile">
+        <img src="https://placehold.co/600x400/EEE/31343C" alt="">
+        <div class="content">
+          <h5>David</h5>
+          <p>test</p>
+        </div>
+      </div>
+    </nav>
+</template>
+<style scoped>
+  nav{
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #F7F7F7;
+  }
+  .notificari img{
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+    margin-top: 20px;
+  }
+  .profile{
+    display: flex;
+    align-items: center;
+  }
+.profile .content{
+  margin-top: 20px;
+  
+}
+  .profile img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 20px;
+    object-fit: cover;
+    margin-top: 20px;
+  }
+  .profile .content p{
+    color: #45BFB3;
+  }
+  .split{
+    height: 40px;
+    width: 1px;
+    background-color: #E0E0E0;
+    margin-top: 20px;
+  }
+  input[type=search]{
+    width: 100%;
+    height: 40px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    padding: 0 20px;
+    outline: 0;
+    margin-top: 20px;
+  }
+</style>

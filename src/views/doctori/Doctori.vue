@@ -13,6 +13,13 @@
         <card :nume="doctor.nume" :prenume="doctor.prenume" :id="doctor.id" />
       </v-col>
     </v-row>
+    <v-pagination
+      v-model="page"
+      :length="pagination"
+      rounded="circle"
+      color="primary"
+      @update:modelValue="getData"
+    ></v-pagination>
   </section>
 </template>
 
@@ -34,7 +41,9 @@
     },
     data() {
       return{
-        doctori: []
+        doctori: [],
+        pagination: null,
+        page: 1,
       }
     },
     created() {
@@ -42,9 +51,17 @@
     },
     methods: {
       getData() {
-        axios.get('http://192.168.1.130/api/doctori/')
+        axios.get('http://192.168.1.130/api/doctori/',
+        {
+          params:{
+            skip: (this.page - 1) * 8,
+            take: 8,
+          }
+        }
+        )
         .then((response) => {
-          this.doctori = response.data;
+          this.doctori = response.data.paginatedResults;
+          this.pagination = Math.ceil(response.data.total / 8);
         }, (error) => {
           console.log(error);
         });

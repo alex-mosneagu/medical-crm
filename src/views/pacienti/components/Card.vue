@@ -50,7 +50,7 @@
               <v-btn class="btn-primary" elevation="0" rounded="0" block @click="dialog = false">Nu</v-btn>
             </v-col>
             <v-col cols="6">
-              <v-btn block color="primary" rounded="0" elevation="0" @click="delete">Da</v-btn>
+              <v-btn block color="primary" rounded="0" elevation="0" @click="deletePacienti">Da</v-btn>
             </v-col>
           </v-row>
         </v-card-text>
@@ -68,9 +68,9 @@
       }
     },
     methods:{
-      delete(){
-        this.$emit('refresh');
+      deletePacienti(){
         this.dialog = false;
+        this.$emit('refresh');
       }
     }
   }

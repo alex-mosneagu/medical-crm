@@ -28,6 +28,7 @@
         <img src="https://via.placeholder.com/150" alt="">
       </div>
       <p class="nume-pacient text-center font-weight-bold text-subtitle-1">{{ nume }} {{ prenume }}</p>
+      <p class="text-center text-primary text-1 text-body-2">{{ specializare }}</p>
       <v-divider class="my-6 mb-8"></v-divider>
       <v-btn block class="mb-4 rounded-pill btn-primary" elevation="0">Programari</v-btn>
       <v-btn block color="secondary" class="text-white rounded-pill" elevation="0">Informatii</v-btn>
@@ -49,7 +50,7 @@
               <v-btn class="btn-primary" elevation="0" rounded="0" block @click="dialog = false">Nu</v-btn>
             </v-col>
             <v-col cols="6">
-              <v-btn block color="primary" rounded="0" elevation="0" @click="delete">Da</v-btn>
+              <v-btn block color="primary" rounded="0" elevation="0" @click="deleteDoctor">Da</v-btn>
             </v-col>
           </v-row>
         </v-card-text>
@@ -58,18 +59,26 @@
 </template>
 
 <script>
+import axios from 'axios'
   export default {
     name: 'Card',
-    props: ['nume', 'prenume', 'id'],
+    props: ['nume', 'prenume', 'id', 'specializare'],
     data() {
       return{
         dialog: false,
       }
     },
+     
     methods:{
-      delete(){
-        this.dialog = false;
-        this.$emit('refresh');
+      deleteDoctor(){
+        axios.delete('http://192.168.1.130/api/doctori/', {
+          params:{
+            id: this.id
+          }
+        }).then(() => {
+          this.dialog = false;
+          this.$emit('refresh');
+        })
       }
     }
   }

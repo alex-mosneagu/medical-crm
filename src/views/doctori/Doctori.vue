@@ -10,7 +10,8 @@
     </div>
     <v-row>
       <v-col v-for="doctor in doctori" cols="3">
-        <card :nume="doctor.nume" :prenume="doctor.prenume" :id="doctor.id" />
+        <card :nume="doctor.nume" :prenume="doctor.prenume" :id="doctor.id" :specializare="doctor.specializare" @refresh="getData"/>
+        
       </v-col>
     </v-row>
     <v-pagination

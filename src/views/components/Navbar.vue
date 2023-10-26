@@ -10,8 +10,10 @@
       <div class="profile">
         <img src="https://placehold.co/600x400/EEE/31343C" alt="">
         <div class="content">
-          <h5>David</h5>
-          <p>test</p>
+          <router-link to="/profilul-meu">
+            <h5>David</h5>
+            <p>test</p>
+          </router-link>
         </div>
       </div>
     </nav>
@@ -35,7 +37,7 @@
   }
 .profile .content{
   margin-top: 20px;
-  
+
 }
   .profile img{
     width: 40px;

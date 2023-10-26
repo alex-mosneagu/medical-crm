@@ -3,7 +3,7 @@
 
   <section class="container-hero">
     <navbar />
-    <filters @refresh="getData"/>
+    <filters @refresh="changeColumns"/>
     <h5 class="text-primary mb-4">Doctori</h5>
     <div class="filters mb-6">
       <add @refresh="getData" />
@@ -18,7 +18,7 @@
       :length="pagination"
       rounded="circle"
       color="primary"
-      @update:modelValue="getData"
+      @update:modelValue="changePage"
     ></v-pagination>
   </section>
 </template>
@@ -45,25 +45,34 @@
         doctori: [],
         pagination: null,
         page: 1,
+        take: 8,
       }
     },
     created() {
       this.getData();
     },
     methods: {
+      changePage(value){
+        this.page = value;
+        this.getData();
+      },
+      changeColumns(value){
+        this.page = 1;
+        this.take = value;
+        this.getData();
+      },
       getData(value) {
-        let take = value || 8;
         axios.get('http://192.168.1.130/api/doctori/',
         {
           params:{
-            skip: (this.page - 1) * take,
-            take: take,
+            skip: (this.page - 1) * this.take,
+            take: this.take,
           }
         }
         )
         .then((response) => {
           this.doctori = response.data.paginatedResults;
-          this.pagination = Math.ceil(response.data.total / take);
+          this.pagination = Math.ceil(response.data.total / this.take);
         }, (error) => {
           console.log(error);
         });

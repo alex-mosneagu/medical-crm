@@ -63,7 +63,7 @@
         this.getData();
       },
       getData(value) {
-        axios.get('http://86.124.30.26/api/doctori/',
+        axios.get('http://192.168.1.130/api/doctori/',
         {
           params:{
             skip: (this.page - 1) * this.take,

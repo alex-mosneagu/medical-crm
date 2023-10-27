@@ -4,7 +4,10 @@
         <input type="search" placeholder="Search doctors by name or title">
       </div>
       <div class="notificari ml-6">
-        <img src="../../images/icons/notificari.png" alt="">
+        <div class="bubble">
+          <img src="../../images/icons/notificari.png" alt="">
+          <span class="notify-bubble">{{ notificari }}</span>
+        </div>
       </div>
       <div class="split mx-8"></div>
       <div class="profile">
@@ -18,6 +21,30 @@
       </div>
     </nav>
 </template>
+
+<script>
+import axios from 'axios';
+
+  export default {
+    name: 'Navbar',
+    data() {
+      return {
+        notificari: null
+      }
+    },
+    created() {
+      this.getData();
+    },
+    methods:{
+      getData(){
+        axios.get('http://192.168.1.130/api/notificari/total/')
+        .then(response => {
+          this.notificari = response.data;
+        })  
+      }
+    }
+  }
+</script>
 <style scoped>
   nav{
     display: flex;
@@ -30,6 +57,11 @@
     height: 25px;
     margin-right: 10px;
     margin-top: 20px;
+    position: relative;
+  }
+  .notificari .bubble .notify-bubble{
+    position: absolute;
+    top: 15;
   }
   .profile{
     display: flex;

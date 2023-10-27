@@ -40,8 +40,17 @@
           },
           selectable: true,
           events: [
-            { title: 'Progrmare 1', start: new Date() }
-          ]
+            { 
+              title: 'Progrmare 1123', 
+              start: new Date(),
+              // add custom color
+              color: '#378006'
+            },
+            { 
+              title: 'Progrmare 1123', 
+              start: new Date(),
+            },
+          ],
         }
       }
     }

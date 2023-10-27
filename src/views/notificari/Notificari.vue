@@ -4,7 +4,7 @@
       <navbar />
       <filters />
       <v-row>
-        <v-col v-for='notifcare in notificari' cols="6" v>
+        <v-col v-for='notifcare in notificari' cols="6">
           <card />
         </v-col>
       </v-row> 

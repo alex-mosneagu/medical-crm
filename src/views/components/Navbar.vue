@@ -52,16 +52,28 @@ import axios from 'axios';
     padding: 10px 20px;
     background-color: #F7F7F7;
   }
+  .notificari{
+    position: relative;
+  }
   .notificari img{
     width: 25px;
     height: 25px;
     margin-right: 10px;
     margin-top: 20px;
-    position: relative;
   }
   .notificari .bubble .notify-bubble{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #45BFB3;
+    color: white;
+    font-size: 11px;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
     position: absolute;
-    top: 15;
+    top: 15px;
+    right: 5px;
   }
   .profile{
     display: flex;

@@ -11,7 +11,7 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item class="c-pointer">
+            <v-list-item class="c-pointer" @click="editDialog=true">
               <v-list-item-title>
                 Editeaza
               </v-list-item-title>
@@ -40,11 +40,11 @@
     >
     <v-card class="pa-5" >
       <v-card-title class="d-flex justify-space-between">
-        <h2>Sterge doctor</h2>
+        <h2>Sterge pacient</h2>
         <v-icon icon="fas fa-times" @click="dialog=false"></v-icon>
       </v-card-title>
         <v-card-text>
-          <p>Esti sigur ca vrei sa stergi doctorul {{nume}} {{prenume}} ?</p>
+          <p>Esti sigur ca vrei sa stergi pacientul {{nume}} {{prenume}} ?</p>
           <v-row class="mt-6">
             <v-col cols="6">
               <v-btn class="btn-primary" elevation="0" rounded="0" block @click="dialog = false">Nu</v-btn>
@@ -56,21 +56,109 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="editDialog"
+      width="600"
+      >
+      <v-card class="pa-5">
+      <v-card-title class="d-flex justify-space-between">
+        <h2>Editeaza pacient</h2>
+        <v-icon icon="fas fa-times" @click="editDialog=false"></v-icon>
+      </v-card-title>
+      <v-card-text>
+        <v-form ref="form">
+          <v-row>
+            <v-col cols="6">
+              <v-text-field
+                v-model="payload.nume"
+                label="Nume"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field
+                v-model="payload.prenume"
+                label="Prenume"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field
+                v-model="payload.adresa"
+                label="Adresa"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field
+                v-model="payload.telefon"
+                label="Telefon"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field
+                v-model="payload.email"
+                label="Email"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="6">
+              <v-btn class="btn-primary" elevation="0" rounded="0" block @click="editDialog = false">Anuleaza</v-btn>
+            </v-col>
+            <v-col cols="6">
+              <v-btn block color="primary" rounded="0" elevation="0" @click="editPacient">Salveaza</v-btn>
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-card-text>
+    </v-card>
+    </v-dialog>
 </template>
 
 <script>
+import axios from 'axios';
   export default {
     name: 'Card',
-    props: ['nume', 'prenume', 'id'],
+    props: ['nume', 'prenume', 'id', 'adresa', 'telefon', 'email'],
     data() {
       return{
         dialog: false,
+        editDialog: false,
+        payload: {
+          nume: this.nume,
+          prenume: this.prenume,
+          adresa: this.adresa,
+          telefon: this.telefon,
+          email: this.email
+        }
       }
     },
     methods:{
+      editPacient(){
+        axios.put('http://192.168.1.130/api/pacienti/', {
+          id: this.id,
+          nume: this.payload.nume,
+          prenume: this.payload.prenume,
+          adresa: this.payload.adresa,
+          telefon: this.payload.telefon,
+          email: this.payload.email
+        }) .then(() => {
+          this.editDialog = false;
+          this.$emit('refresh');
+        })
+      },
       deletePacienti(){
-        this.dialog = false;
-        this.$emit('refresh');
+        axios.delete('http://192.168.1.130/api/pacienti/', {
+          params:{
+            id: this.id
+          }
+        }).then(() => {
+          this.dialog = false;
+          this.$emit('refresh');
+        })
       }
     }
   }

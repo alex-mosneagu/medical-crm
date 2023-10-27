@@ -10,7 +10,7 @@
     </div>
     <v-row>
       <v-col v-for="pacient in pacienti" cols="3">
-        <card :nume="pacient.nume" :prenume="pacient.prenume" :id="pacient.id" />
+        <card :nume="pacient.nume" :prenume="pacient.prenume" :id="pacient.id" :adresa="pacient.adresa" :telefon="pacient.telefon" :email="pacient.email" @refresh="getData" />
       </v-col>
     </v-row>
     <v-pagination
@@ -62,7 +62,6 @@
         this.getData();
       },
       getData(value){
-        let take = value || 8;
         axios.get('http://192.168.1.130/api/pacienti/',{
           params:{
             skip: (this.page - 1) * this.take,

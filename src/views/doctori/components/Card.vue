@@ -11,7 +11,7 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item class="c-pointer">
+            <v-list-item class="c-pointer" @click="editDialog=true">
               <v-list-item-title>
                 Editeaza
               </v-list-item-title>
@@ -56,20 +56,112 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="editDialog"
+      width="600"
+    >
+    <v-card class="pa-5">
+      <v-card-title class="d-flex justify-space-between">
+        <h2>Editeaza doctor</h2>
+        <v-icon icon="fas fa-times" @click="editDialog=false"></v-icon>
+      </v-card-title>
+      <v-card-text>
+        <v-form ref="form">
+          <v-row>
+            <v-col cols="6">
+              <v-text-field
+                v-model="payload.nume"
+                label="Nume"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field
+                v-model="payload.prenume"
+                label="Prenume"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field
+                v-model="payload.specializare"
+                label="Specializare"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field
+                v-model="payload.adresa"
+                label="Adresa"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field
+                v-model="payload.telefon"
+                label="Telefon"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field
+                v-model="payload.email"
+                label="Email"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="6">
+              <v-btn class="btn-primary" elevation="0" rounded="0" block @click="editDialog = false">Anuleaza</v-btn>
+            </v-col>
+            <v-col cols="6">
+              <v-btn block color="primary" rounded="0" elevation="0" @click="editDoctor">Salveaza</v-btn>
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-card-text>
+    </v-card>
+    </v-dialog>
 </template>
 
 <script>
 import axios from 'axios'
   export default {
     name: 'Card',
-    props: ['nume', 'prenume', 'id', 'specializare'],
+    props: ['nume', 'prenume', 'id', 'specializare', 'adresa', 'telefon', 'email'],
     data() {
       return{
         dialog: false,
+        editDialog: false,
+        payload: {
+          nume: this.nume,
+          prenume: this.prenume,
+          specializare: this.specializare,
+          adresa: this.adresa,
+          telefon: this.telefon,
+          email: this.email,
+          
+        }
       }
     },
-     
+  
     methods:{
+      editDoctor(){
+        axios.put('http://192.168.1.130/api/doctori/', {
+            id: this.id,
+            nume: this.payload.nume,
+            prenume: this.payload.prenume,
+            specializare: this.payload.specializare,
+            adresa: this.payload.adresa,
+            telefon: this.payload.telefon,
+            email: this.payload.email,
+
+        }) .then(() => {
+          this.editDialog = false;
+          this.$emit('refresh');
+        })
+      },
       deleteDoctor(){
         axios.delete('http://192.168.1.130/api/doctori/', {
           params:{
@@ -79,8 +171,8 @@ import axios from 'axios'
           this.dialog = false;
           this.$emit('refresh');
         })
-      }
-    }
+      } 
+    } 
   }
 </script>
 

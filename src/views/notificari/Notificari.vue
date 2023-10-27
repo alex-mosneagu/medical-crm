@@ -3,68 +3,54 @@
     <section class="container-hero">
       <navbar />
       <filters />
-      <div class="table pa-4">
-        <v-table>
-          <thead>
-            <tr>
-              <th><strong>Doctor</strong></th>
-              <th class="text-center"><strong>File</strong></th>
-              <th class="text-center"><strong>Time</strong></th>
-              <th class="text-center"><strong>Action</strong></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><h4>Dr. John Doe</h4></td>
-              <td class="text-center">File.pdf</td>
-              <td class="text-center">12:00</td>
-              <td>
-                <v-btn class="btn-primary" elevation="0" rounded="0" block>Vezi rezultate</v-btn>
-              </td>
-              <td>
-                <v-icon icon="fas fa-bars"></v-icon>
-              </td>
-            </tr>
-            <tr>
-              <td><h4>Dr. John Doe</h4></td>
-              <td class="text-center">File.pdf</td>
-              <td class="text-center">12:00</td>
-              <td>
-                <v-btn class="btn-primary" elevation="0" rounded="0" block>Vezi rezultate</v-btn>
-              </td>
-              <td>
-                <v-icon icon="fas fa-bars"></v-icon>
-              </td>
-            </tr>
-            <tr>
-              <td><h4>Dr. John Doe</h4></td>
-              <td class="text-center">File.pdf</td>
-              <td class="text-center">12:00</td>
-              <td>
-                <v-btn class="btn-primary" elevation="0" rounded="0" block>Vezi rezultate</v-btn>
-              </td>
-              <td>
-                <v-icon icon="fas fa-bars"></v-icon>
-              </td>
-            </tr>
-          </tbody>
-        </v-table>
-      </div>
-      
+      <v-row>
+        <v-col v-for='notifcare in notificari' cols="6" v>
+          <card />
+        </v-col>
+      </v-row> 
     </section>
 </template>
 
 <script>
+import axios from 'axios';
 import Sidebar from '../components/Sidebar.vue';
 import Navbar from '../components/Navbar.vue';
 import Filters from '../components/Filters.vue';
+import Card from './components/Card.vue';
+
 export default{
   components: {
     Sidebar,
     Navbar,
-    Filters
-  }
+    Filters,
+    Card,
+  },
+  data(){
+    return{
+      notificari: [],
+      take: 8,
+      page: 1,
+      pagination: null,
+    }
+  },
+  created(){
+    this.getData();
+  },
+  methods: {
+    getData(){
+      axios.get('http://192.168.1.130/api/notificari/',
+      {
+        params: {
+          skip: (this.page - 1) * this.take,
+          take: this.take,
+        }     
+      })
+      .then((response)=>{
+        this.notificari = response.data.paginatedResults
+        this.pagination = Math.ceil(response.data.total / this.take)
+      })
+    }
+  },
 }
 </script>
 <style lang="scss" scoped>

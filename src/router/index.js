@@ -5,6 +5,7 @@ import Programari from '../views/Programari.vue'
 import Doctori from '../views/doctori/Doctori.vue'
 import Pacienti from '../views/pacienti/Pacienti.vue'
 import Profile from '../views/profile/Profile.vue'
+import Notificari from '../views/notificari/Notificari.vue'
 
 const routes = createRouter({
     history: createWebHistory(),
@@ -45,6 +46,14 @@ const routes = createRouter({
             path: "/profilul-meu",
             name: "Profile",
             component: Profile,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: "/notificari",
+            name: "Notificari",
+            component: Notificari,
             meta: {
                 requiresAuth: true
             }

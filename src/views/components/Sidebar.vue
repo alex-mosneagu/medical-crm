@@ -50,7 +50,7 @@
           </router-link>
         </div>
         <div class="item">
-          <router-link to="/">
+          <router-link to="/notificari">
             <div class="icon">
               <img :src="notificariIcon" alt="">
             </div>

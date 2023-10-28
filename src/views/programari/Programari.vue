@@ -30,7 +30,7 @@
               <v-col cols="6">
                 <v-text-field
                   v-model="payload.start"
-                  type="date"
+                  type="datetime-local"
                   required
                 ></v-text-field>
               </v-col>
@@ -78,7 +78,7 @@
         </v-col>
       </v-row>
     </v-card>
-  </v-dialog>
+    </v-dialog>
   </section>
 </template>
 
@@ -174,8 +174,13 @@
       },  
       addEvent(data) {
         this.dialog = true
-        this.payload.start = data.startStr
-        this.payload.end = data.endStr
+        if(!data.allDay){
+          this.payload.start = data.startStr.replace('+03:00', '')
+          this.payload.end = data.endStr.replace('+03:00', '')
+        }else{
+          this.payload.start = data.startStr
+          this.payload.end = data.endStr
+        }
         this.payload.allDay = data.allDay
       },
       getData(){

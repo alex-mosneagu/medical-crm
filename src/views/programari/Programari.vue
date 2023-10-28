@@ -26,6 +26,13 @@
                   label="Title"
                   required
                 ></v-text-field>
+                <v-select
+                  v-model="payload.categorie"
+                  label="Categorie"
+                  required
+                  :items="categorii"
+                  item-title="nume"
+                ></v-select>
               </v-col>
               <v-col cols="6">
                 <v-text-field
@@ -74,11 +81,33 @@
           <v-btn class="btn-primary" elevation="0" rounded="0" block @click="close">Editeaza</v-btn>
         </v-col>
         <v-col cols="6">
-          <v-btn color="primary" elevation="0" rounded="0" block @click="save">Sterge</v-btn>
+          <v-btn color="primary" elevation="0" rounded="0" block @click="stergeEvent= true">Sterge</v-btn>
         </v-col>
       </v-row>
     </v-card>
   </v-dialog>
+  <v-dialog
+      v-model="stergeEvent"
+      width="600"
+    >
+    <v-card class="pa-5" >
+      <v-card-title class="d-flex justify-space-between">
+        <h2>Sterge eveniment</h2>
+        <v-icon icon="fas fa-times" @click="stergeEvent=false"></v-icon>
+      </v-card-title>
+        <v-card-text>
+          <p>Esti sigur ca vrei sa stergi evenimentul {{viewData.title}} ?</p>
+          <v-row class="mt-6">
+            <v-col cols="6">
+              <v-btn class="btn-primary" elevation="0" rounded="0" block @click="stergeEvent = false">Nu</v-btn>
+            </v-col>
+            <v-col cols="6">
+              <v-btn block color="primary" rounded="0" elevation="0" @click="deleteEvent">Da</v-btn>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </section>
 </template>
 
@@ -104,16 +133,21 @@
       return{
         dialog: false,
         viewDialog: false,
+        stergeEvent: false,
+        categorii: [],
         viewData: {
+          id: null,
           title: null,
           start: null,
-          end: null
+          end: null,
+        
         },
         payload: {
           title: null,
           start: null,
           end: null,
-          allDay: false
+          allDay: false,
+          categorie: null
         },
         calendarOptions: {
           locale: 'ro',
@@ -183,13 +217,31 @@
         .then((response) => {
           this.calendarOptions.events = response.data;
         })
+        axios.get('http://192.168.1.130/api/evenimente/categorii/')
+        .then((response) =>
+        {
+          this.categorii = response.data;
+        })
       },
       viewEvent(data){
         this.viewData.title = data.event.title
         this.viewData.start = data.event.startStr
         this.viewData.end = data.event.endStr
+        this.viewData.id = data.event.id
         this.viewDialog = true
       },
+      deleteEvent(){
+        axios.delete('http://192.168.1.130/api/evenimente/',
+        {
+          params:{
+            id: this.viewData.id
+          }
+        }).then(() =>{
+          this.viewDialog = false
+          this.stergeEvent = false
+          this.getData()
+        })
+      }
     }
   }
 </script>

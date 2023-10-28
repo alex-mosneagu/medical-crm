@@ -55,9 +55,30 @@
             </v-row>
           </v-form>
       </v-card-text>
-     
     </v-card>
     </v-dialog>
+    <v-dialog 
+      width="600"
+      v-model="viewDialog"
+    >
+    <v-card class="pa-5">
+      <v-card-title class="d-flex justify-space-between">
+        <h2>Editeaza eveniment</h2>
+        <v-icon icon="mdi-close" @click="viewDialog= false"></v-icon>
+      </v-card-title>
+      <v-card-text>
+        <p>Testdata - testData</p>
+      </v-card-text>
+      <v-row class="mt-4">
+        <v-col cols="6">
+          <v-btn class="btn-primary" elevation="0" rounded="0" block @click="close">Editeaza</v-btn>
+        </v-col>
+        <v-col cols="6">
+          <v-btn color="primary" elevation="0" rounded="0" block @click="save">Sterge</v-btn>
+        </v-col>
+      </v-row>
+    </v-card>
+  </v-dialog>
   </section>
 </template>
 
@@ -82,6 +103,7 @@
     data() {
       return{
         dialog: false,
+        viewDialog: false,
         payload: {
           title: null,
           start: null,
@@ -118,7 +140,7 @@
             this.addEvent(arg)
           },
           eventClick: (arg) => {
-            console.log(arg)
+            this.viewEvent()
           },
           eventDrop: (arg) => {
             alert(arg.event.title + " was dropped on " + arg.event.start)
@@ -157,7 +179,11 @@
           this.calendarOptions.events = response.data;
           console.log(this.calendarOptions.events)
         })
-      }
+      },
+      viewEvent(){
+        this.getData();
+        this.viewDialog = true
+      },
     }
   }
 </script>

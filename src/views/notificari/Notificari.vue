@@ -5,7 +5,7 @@
       <filters />
       <v-row>
         <v-col v-for='notifcare in notificari' cols="6">
-          <card />
+          <card :title="notifcare.location" :content="notifcare.content" :date="notifcare.created_at" :id="notifcare.id" @refresh="getData"/>
         </v-col>
       </v-row> 
     </section>

@@ -3,27 +3,71 @@
        <div class="card">
         <div class="card-title">
           <div></div>
-          <h4>Card</h4>
+          <h4>{{ title }}</h4>
         </div>
         <div class="card-content my-4">
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+          <p>{{ content }}</p>
         </div>
         <div class="card-footer">
           <v-row class="align-center">
             <v-col cols="6">
-              <p>Data</p>
+              <p>{{ date }}</p>
             </v-col>
             <v-col class="text-right" cols="6">
-              <v-btn color="primary" rounded="0" elevation="0">Sterge</v-btn>
+              <v-btn color="primary" rounded="0" elevation="0" @click="deleteDialog=true">Sterge</v-btn>
             </v-col>
           </v-row>
         </div>
        </div>
+       <v-dialog
+       v-model="deleteDialog"
+       width="600"
+       >
+        <v-card class="pa-5" >
+          <v-card-title class="d-flex justify-space-between">
+            <h2>Sterge notificare</h2>
+            <v-icon icon="fas fa-times" @click="deleteDialog=false"></v-icon>
+          </v-card-title>
+            <v-card-text>
+              <p>Esti sigur ca vrei sa stergi notificare?</p>
+              <v-row class="mt-6">
+                <v-col cols="6">
+                  <v-btn class="btn-primary" elevation="0" rounded="0" block @click="deleteDialog = false">Nu</v-btn>
+                </v-col>
+                <v-col cols="6">
+                  <v-btn block color="primary" rounded="0" elevation="0" @click="deleteNotification">Da</v-btn>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+       </v-dialog>
     </div>
 </template>
 
 <script>
-  
+import axios from 'axios'
+  export default{
+    name: 'Card',
+    props: ['title', 'content', 'date', 'id'],
+    emits: ['refresh'],
+    data(){
+      return{
+        deleteDialog: false,
+      }
+    },
+    methods:{
+      deleteNotification() {
+        axios.delete('http://192.168.1.130/api/notificari/', {
+            params: {
+              id: this.id
+            }
+      }).then(() => {
+          this.deleteDialog = false;
+          this.$emit('refresh');
+        })
+      },
+    }
+  }
 </script>
 
 <style lang="scss" scoped>

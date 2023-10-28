@@ -6,7 +6,7 @@
       <div class="notificari ml-6">
         <div class="bubble">
           <img src="../../images/icons/notificari.png" alt="">
-          <span class="notify-bubble">{{ notificari }}</span>
+          <span v-if="notificari > 0" class="notify-bubble">{{ notificari }}</span>
         </div>
       </div>
       <div class="split mx-8"></div>

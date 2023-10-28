@@ -63,8 +63,8 @@
               start: arg.start,
               end: arg.end,
               allDay: arg.allDay,
-              backgroundColor: '#378006',
-              borderColor: '#378006'
+              backgroundColor: '#ccc',
+              borderColor: '#ccc'
             })
             this.addEvent(arg)
           },

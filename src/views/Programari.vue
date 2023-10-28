@@ -88,8 +88,8 @@
         console.log(data)
         let payload = {
           title: 'New event',
-          start: data.start,
-          end: data.end,
+          start: data.startStr,
+          end: data.endStr,
           allDay: data.allDay,
           backgroundColor: '#378006',
           borderColor: '#378006'

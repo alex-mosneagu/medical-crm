@@ -63,11 +63,11 @@
     >
     <v-card class="pa-5">
       <v-card-title class="d-flex justify-space-between">
-        <h2>Editeaza eveniment</h2>
+        <h2>{{ viewData.title }}</h2>
         <v-icon icon="mdi-close" @click="viewDialog= false"></v-icon>
       </v-card-title>
       <v-card-text>
-        <p>Testdata - testData</p>
+        <p>{{ viewData.start }} - {{ viewData.end }}</p>
       </v-card-text>
       <v-row class="mt-4">
         <v-col cols="6">
@@ -104,6 +104,11 @@
       return{
         dialog: false,
         viewDialog: false,
+        viewData: {
+          title: null,
+          start: null,
+          end: null
+        },
         payload: {
           title: null,
           start: null,
@@ -140,7 +145,7 @@
             this.addEvent(arg)
           },
           eventClick: (arg) => {
-            this.viewEvent()
+            this.viewEvent(arg)
           },
           eventDrop: (arg) => {
             alert(arg.event.title + " was dropped on " + arg.event.start)
@@ -177,11 +182,12 @@
         axios.get('http://192.168.1.130/api/evenimente/')
         .then((response) => {
           this.calendarOptions.events = response.data;
-          console.log(this.calendarOptions.events)
         })
       },
-      viewEvent(){
-        this.getData();
+      viewEvent(data){
+        this.viewData.title = data.event.title
+        this.viewData.start = data.event.startStr
+        this.viewData.end = data.event.endStr
         this.viewDialog = true
       },
     }

@@ -1,12 +1,15 @@
 <template>
     <nav class="mb-10">
       <div class="w-75">
-        <input type="search" placeholder="Search doctors by name or title">
+        <input type="search" placeholder="Search pathology results">
       </div>
       <div class="notificari ml-6">
         <div class="bubble">
-          <img src="../../images/icons/notificari.png" alt="">
-          <span v-if="notificari > 0" class="notify-bubble">{{ notificari }}</span>
+          <router-link to="/notificari.vue">
+            <img src="../../images/icons/notificari.png" alt="">
+            <span v-if="notificari > 0" class="notify-bubble">{{ notificari }}</span>
+          </router-link>
+          
         </div>
       </div>
       <div class="split mx-8"></div>

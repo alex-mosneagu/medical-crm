@@ -15,7 +15,7 @@
     <v-card class="pa-5">
       <v-card-title class="d-flex justify-space-between">
         <h2>Adauga eveniment</h2>
-        <v-icon icon="fas fa-times" @click="close"></v-icon>
+        <v-icon icon="mdi-close" @click="close"></v-icon>
       </v-card-title>
       <v-card-text>
         <v-form ref="form">
@@ -23,7 +23,7 @@
               <v-col cols="12">
                 <v-text-field
                   v-model="payload.title"
-                  label="title"
+                  label="Title"
                   required
                 ></v-text-field>
               </v-col>
@@ -41,8 +41,8 @@
                   required
                 ></v-text-field>
               </v-col>
-              <v-col cols="6">
-                <v-checkbox v-model="payload.allDay" label="Checkbox"></v-checkbox>
+              <v-col cols="12">
+                <v-checkbox v-model="payload.allDay" label="All day"></v-checkbox>
               </v-col>
             </v-row>
             <v-row>

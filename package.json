@@ -15,6 +15,7 @@
     "@fullcalendar/list": "^6.1.8",
     "@fullcalendar/timegrid": "^6.1.8",
     "@fullcalendar/vue3": "^6.1.8",
+    "@mdi/font": "^7.3.67",
     "axios": "^1.5.1",
     "sass": "^1.64.2",
     "vue": "^3.3.4",

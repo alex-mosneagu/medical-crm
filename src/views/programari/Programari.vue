@@ -118,7 +118,7 @@
             this.addEvent(arg)
           },
           eventClick: (arg) => {
-            console.log(arg.event)
+            console.log(arg)
           },
           eventDrop: (arg) => {
             alert(arg.event.title + " was dropped on " + arg.event.start)
@@ -150,15 +150,6 @@
         this.payload.start = data.startStr
         this.payload.end = data.endStr
         this.payload.allDay = data.allDay
-        let payload = {
-          title: 'New event',
-          start: data.startStr,
-          end: data.endStr,
-          allDay: data.allDay,
-          backgroundColor: '#378006',
-          borderColor: '#378006'
-        }
-        // axios.post('http://192.168.1.130/api/evenimente/', payload)
       },
       getData(){
         axios.get('http://192.168.1.130/api/evenimente/')

@@ -7,6 +7,57 @@
     <FullCalendar 
     :options='calendarOptions'
     />
+    <v-dialog
+    v-model="dialog"
+    width="600"
+    @update:modelValue="close"
+    >
+    <v-card class="pa-5">
+      <v-card-title class="d-flex justify-space-between">
+        <h2>Adauga eveniment</h2>
+        <v-icon icon="fas fa-times" @click="close"></v-icon>
+      </v-card-title>
+      <v-card-text>
+        <v-form ref="form">
+            <v-row>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="payload.title"
+                  label="title"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-text-field
+                  v-model="payload.start"
+                  type="date"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-text-field
+                  v-model="payload.end"
+                  type="date"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-checkbox v-model="payload.allDay" label="Checkbox"></v-checkbox>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="6">
+                <v-btn class="btn-primary" elevation="0" rounded="0" block @click="close">Anuleaza</v-btn>
+              </v-col>
+              <v-col cols="6">
+                <v-btn color="primary" elevation="0" rounded="0" block @click="save">Salveaza</v-btn>
+              </v-col>
+            </v-row>
+          </v-form>
+      </v-card-text>
+     
+    </v-card>
+    </v-dialog>
   </section>
 </template>
 
@@ -30,14 +81,13 @@
     },
     data() {
       return{
-        events: [
-          {
-            title: 'All Day Event',
-            start: '2023-10-28',
-            backgroundColor: '#378006',
-            borderColor: '#378006'
-          }
-        ],
+        dialog: false,
+        payload: {
+          title: null,
+          start: null,
+          end: null,
+          allDay: false
+        },
         calendarOptions: {
           locale: 'ro',
           plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
@@ -54,7 +104,6 @@
           },
           selectable: true,
           editable: true,
-          events: this.events,
           select: (arg) => {
             const cal = arg.view.calendar
             cal.unselect()
@@ -84,8 +133,23 @@
       this.getData();
     },
     methods: {
+      save() {
+        axios.post('http://192.168.1.130/api/evenimente/', this.payload)
+        .then((response) =>{
+          this.dialog= false
+          this.getData();
+          this.payload.title = null
+        })
+      },
+      close() {
+        this.dialog= false
+        this.getData();
+      },  
       addEvent(data) {
-        console.log(data)
+        this.dialog = true
+        this.payload.start = data.startStr
+        this.payload.end = data.endStr
+        this.payload.allDay = data.allDay
         let payload = {
           title: 'New event',
           start: data.startStr,
@@ -94,7 +158,7 @@
           backgroundColor: '#378006',
           borderColor: '#378006'
         }
-        axios.post('http://192.168.1.130/api/evenimente/', payload)
+        // axios.post('http://192.168.1.130/api/evenimente/', payload)
       },
       getData(){
         axios.get('http://192.168.1.130/api/evenimente/')

@@ -12,7 +12,7 @@
     width="600"
     @update:modelValue="close"
     >
-    <v-card>
+    <v-card class="pa-5">
       <v-card-title class="d-flex justify-space-between">
         <h2>Adauga eveniment</h2>
         <v-icon icon="fas fa-times" @click="close"></v-icon>
@@ -42,16 +42,20 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="6">
-                <v-checkbox label="Checkbox"></v-checkbox>
+                <v-checkbox v-model="payload.allDay" label="Checkbox"></v-checkbox>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="6">
+                <v-btn class="btn-primary" elevation="0" rounded="0" block @click="close">Anuleaza</v-btn>
+              </v-col>
+              <v-col cols="6">
+                <v-btn color="primary" elevation="0" rounded="0" block @click="save">Salveaza</v-btn>
               </v-col>
             </v-row>
           </v-form>
       </v-card-text>
-      <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="close">Anuleaza</v-btn>
-          <v-btn color="primary" text @click="save">Salveaza</v-btn>
-        </v-card-actions>
+     
     </v-card>
     </v-dialog>
   </section>

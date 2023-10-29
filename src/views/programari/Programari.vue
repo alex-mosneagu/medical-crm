@@ -32,19 +32,34 @@
                   required
                   :items="categorii"
                   item-title="nume"
+                  item-value="id"
                 ></v-select>
               </v-col>
-              <v-col cols="6">
+              <v-col v-if="payload.allDay" cols="6">
+                <v-text-field
+                  v-model="payload.start"
+                  type="date"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col v-if="payload.allDay" cols="6">
+                <v-text-field
+                  v-model="payload.end"
+                  type="date"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col v-if="!payload.allDay" cols="6">
                 <v-text-field
                   v-model="payload.start"
                   type="datetime-local"
                   required
                 ></v-text-field>
               </v-col>
-              <v-col cols="6">
+              <v-col v-if="!payload.allDay" cols="6">
                 <v-text-field
                   v-model="payload.end"
-                  type="date"
+                  type="datetime-local"
                   required
                 ></v-text-field>
               </v-col>

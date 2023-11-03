@@ -233,11 +233,11 @@
         this.payload.allDay = data.allDay
       },
       getData(){
-        axios.get('https://psyhelp-api.oldstudioconcept.ro/')
+        axios.get('https://psyhelp-api.oldstudioconcept.ro/evenimente/')
         .then((response) => {
           this.calendarOptions.events = response.data;
         })
-        axios.get('https://psyhelp-api.oldstudioconcept.ro/')
+        axios.get('https://psyhelp-api.oldstudioconcept.ro/evenimente/categorii/')
         .then((response) =>
         {
           this.categorii = response.data;

@@ -42,11 +42,19 @@
           </router-link>
         </div>
         <div class="item">
-          <router-link to="/">
+          <router-link to="/servicii">
             <div class="icon">
               <img :src="sedinteIcon" alt="">
             </div>
-            <div class="text">Sedinte</div>
+            <div class="text">Servicii</div>
+          </router-link>
+        </div>
+        <div class="item">
+          <router-link to="/pachete">
+            <div class="icon">
+              <img :src="sedinteIcon" alt="">
+            </div>
+            <div class="text">Pachete</div>
           </router-link>
         </div>
         <div class="item">

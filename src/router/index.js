@@ -6,6 +6,8 @@ import Doctori from '../views/doctori/Doctori.vue'
 import Pacienti from '../views/pacienti/Pacienti.vue'
 import Profile from '../views/profile/Profile.vue'
 import Notificari from '../views/notificari/Notificari.vue'
+import Servicii from '../views/servicii/Servicii.vue'
+import Pachete from '../views/pachete/Pachete.vue'
 
 const routes = createRouter({
     history: createWebHistory(),
@@ -54,6 +56,22 @@ const routes = createRouter({
             path: "/notificari",
             name: "Notificari",
             component: Notificari,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: "/servicii",
+            name: "Servicii",
+            component: Servicii,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: "/pachete",
+            name: "Pachete",
+            component: Pachete,
             meta: {
                 requiresAuth: true
             }

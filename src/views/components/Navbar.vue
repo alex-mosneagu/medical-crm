@@ -40,7 +40,7 @@ import axios from 'axios';
     },
     methods:{
       getData(){
-        axios.get('http://192.168.1.130/api/notificari/total/')
+        axios.get('https://psyhelp-api.oldstudioconcept.ro/')
         .then(response => {
           this.notificari = response.data;
         })  

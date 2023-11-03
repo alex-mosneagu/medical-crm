@@ -251,7 +251,7 @@
         this.viewDialog = true
       },
       deleteEvent(){
-        axios.delete('https://psyhelp-api.oldstudioconcept.ro/',
+        axios.delete('https://psyhelp-api.oldstudioconcept.ro/evenimente/',
         {
           params:{
             id: this.viewData.id

@@ -163,7 +163,7 @@
           })
         },
         deleteDoctor(){
-          axios.delete('https://psyhelp-api.oldstudioconcept.ro/', {
+          axios.delete('https://psyhelp-api.oldstudioconcept.ro/doctori/', {
             params:{
               id: this.id
             }

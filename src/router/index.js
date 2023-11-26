@@ -8,6 +8,7 @@ import Profile from '../views/profile/Profile.vue'
 import Notificari from '../views/notificari/Notificari.vue'
 import Servicii from '../views/servicii/Servicii.vue'
 import Pachete from '../views/pachete/Pachete.vue'
+import Contracte from '../views/contracte/Contracte.vue'
 
 const routes = createRouter({
     history: createWebHistory(),
@@ -72,6 +73,14 @@ const routes = createRouter({
             path: "/pachete",
             name: "Pachete",
             component: Pachete,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: "/contracte",
+            name: "Contracte",
+            component: Contracte,
             meta: {
                 requiresAuth: true
             }

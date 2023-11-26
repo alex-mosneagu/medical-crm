@@ -210,7 +210,7 @@
     },
     methods: {
       save() {
-        axios.post('https://psyhelp-api.oldstudioconcept.ro/', this.payload)
+        axios.post('https://psyhelp-api.oldstudioconcept.ro/evenimente/', this.payload)
         .then((response) =>{
           this.dialog= false
           this.getData();

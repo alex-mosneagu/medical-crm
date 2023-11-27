@@ -38,7 +38,7 @@ export default{
   },
   methods: {
     getData(){
-      axios.get('https://psyhelp-api.oldstudioconcept.ro/notificari/',
+      axios.get('http://psyhelp-api.oldstudioconcept.ro/notificari/',
       {
         params: {
           skip: (this.page - 1) * this.take,

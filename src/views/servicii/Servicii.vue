@@ -7,46 +7,67 @@
           <add @refresh="getData" />
         </div>
         <v-row>
-          <v-col cols="6">
-          <card title="Title" content="content" date="07/06/2023" id="2" @refresh="getData"/>
-          </v-col>
-          <v-col cols="6">
-          <card title="Title" content="content" date="07/06/2023" id="3" @refresh="getData"/>
-          </v-col>
-          <v-col cols="6">
-          <card title="Title" content="content" date="07/06/2023" id="3" @refresh="getData"/>
-          </v-col>
-          <v-col cols="6">
-          <card title="Title" content="content" date="07/06/2023" id="3" @refresh="getData"/>
-          </v-col>
-          <v-col cols="6">
-          <card title="Title" content="content" date="07/06/2023" id="3" @refresh="getData"/>
-          </v-col>
-          <v-col cols="6">
-          <card title="Title" content="content" date="07/06/2023" id="3" @refresh="getData"/>
+          <v-col v-for="serviciu in servicii" :key="serviciu.id" cols="6">
+            <card :title="serviciu.nume" :content="serviciu.descriere" :date="serviciu.pret" :id="serviciu.id" @refresh="getData"/>
           </v-col>
       </v-row> 
+      <v-pagination
+        v-model="page"
+        :length="pagination"
+        rounded="circle"
+        color="primary"
+        @update:modelValue="changePage"
+      ></v-pagination>
     </section>
 </template>
 
 <script>
+import axios from 'axios'
 import Sidebar from '../components/Sidebar.vue';
 import Navbar from '../components/Navbar.vue';
 import Card from './components/Card.vue';
 import Add from './components/Add.vue';
 export default{
-    name: 'Servicii',
-    components: {
-        Sidebar,
-        Navbar,
-        Card,
-        Add
-    },
-    data(){
+  name: 'Servicii',
+  components: {
+      Sidebar,
+      Navbar,
+      Card,
+      Add
+  },
+  data(){
     return{
-      notificari: [],
+      servicii: [],
+      pagination: null,
+      page: 1,
+      take: 8,
     }
-},
+  },
+  created() {
+    this.getData()
+  },
+  methods: {
+    changePage(value){
+      this.page = value;
+      this.getData();
+    },
+    getData() {
+      axios.get('http://psyhelp-api.oldstudioconcept.ro/servicii/',
+      {
+        params:{
+          skip: (this.page - 1) * this.take,
+          take: this.take,
+        }
+      }
+      )
+      .then((response) => {
+        this.servicii = response.data.paginatedResults;
+        this.pagination = Math.ceil(response.data.total / this.take);
+      }, (error) => {
+        console.log(error);
+      });
+    },
+  }
 }
 </script>
 

@@ -138,7 +138,7 @@ import axios from 'axios';
     },
     methods:{
       editPacient(){
-        axios.put('https://psyhelp-api.oldstudioconcept.ro/pacienti/', {
+        axios.put('http://psyhelp-api.oldstudioconcept.ro/pacienti/', {
           id: this.id,
           nume: this.payload.nume,
           prenume: this.payload.prenume,
@@ -151,7 +151,7 @@ import axios from 'axios';
         })
       },
       deletePacienti(){
-        axios.delete('https://psyhelp-api.oldstudioconcept.ro/pacienti/', {
+        axios.delete('http://psyhelp-api.oldstudioconcept.ro/pacienti/', {
           params:{
             id: this.id
           }

@@ -19,17 +19,18 @@
                 </v-col>
                 <v-col cols="6">
                   <v-text-field
-                    v-model="payload.descriere"
-                    label="Descriere"
-                    required
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="6">
-                  <v-text-field
+                    type="number"
                     v-model="payload.pret"
                     label="Pret"
                     required
                   ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-textarea 
+                    v-model="payload.descriere"
+                    label="Descriere"
+                    required
+                  ></v-textarea>
                 </v-col>
               </v-row>
             </v-form>
@@ -53,17 +54,14 @@
           dialog: false,
           payload: {
             nume: null,
-            prenume: null,
-            specializare: null,
-            adresa: null,
-            telefon: null,
-            email: null,
+            descriere: null,
+            pret: null
           },
         }
       },
       methods: {
         save() {
-          axios.post('https://psyhelp-api.oldstudioconcept.ro/doctori/', this.payload)
+          axios.post('http://psyhelp-api.oldstudioconcept.ro/servicii/', this.payload)
           .then((response) => {
             this.dialog = false;
             this.$emit('refresh')

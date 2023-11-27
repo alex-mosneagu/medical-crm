@@ -4,11 +4,11 @@
         <div class="options">
           <v-menu>
             <template v-slot:activator="{props}">
-              <v-btn 
+              <!-- <v-btn 
               v-bind="props"
               icon elevation="0">
                 <i class="fas fa-ellipsis-h"></i>
-              </v-btn>
+              </v-btn> -->
             </template>
             <v-list>
               <v-list-item class="c-pointer" @click="editDialog=true">
@@ -28,9 +28,8 @@
           <img src="https://via.placeholder.com/150" alt="">
         </div>
         <p class="nume-pacient text-center font-weight-bold text-subtitle-1">{{ nume }} {{ prenume }}</p>
-        <p class="text-center text-primary text-1 text-body-2">{{ specializare }}</p>
+        <p class="text-center text-primary text-1 text-body-2">{{ specializare }} RON</p>
         <v-divider class="my-6 mb-8"></v-divider>
-        <v-btn block class="mb-4 rounded-pill btn-primary" elevation="0">Programari</v-btn>
         <v-btn block color="secondary" class="text-white rounded-pill" elevation="0">Informatii</v-btn>
       </div>
     </div>
@@ -148,7 +147,7 @@
     
       methods:{
         editDoctor(){
-          axios.put('https://psyhelp-api.oldstudioconcept.ro/', {
+          axios.put('http://psyhelp-api.oldstudioconcept.ro/', {
               id: this.id,
               nume: this.payload.nume,
               prenume: this.payload.prenume,
@@ -163,7 +162,7 @@
           })
         },
         deleteDoctor(){
-          axios.delete('https://psyhelp-api.oldstudioconcept.ro/doctori/', {
+          axios.delete('http://psyhelp-api.oldstudioconcept.ro/doctori/', {
             params:{
               id: this.id
             }

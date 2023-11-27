@@ -11,7 +11,6 @@
     <v-row>
       <v-col v-for="doctor in doctori" cols="3">
         <card :nume="doctor.nume" :prenume="doctor.prenume" :id="doctor.id" :specializare="doctor.specializare" :email="doctor.email" :telefon="doctor.telefon" :adresa="doctor.adresa" @refresh="getData"/>
-        
       </v-col>
     </v-row>
     <v-pagination
@@ -63,7 +62,7 @@
         this.getData();
       },
       getData(value) {
-        axios.get('https://psyhelp-api.oldstudioconcept.ro/doctori/',
+        axios.get('http://psyhelp-api.oldstudioconcept.ro/doctori/',
         {
           params:{
             skip: (this.page - 1) * this.take,

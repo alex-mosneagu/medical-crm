@@ -11,7 +11,7 @@
         <div class="card-footer">
           <v-row class="align-center">
             <v-col cols="6">
-              <p>{{ date }}</p>
+              <p>{{ date }} RON</p>
             </v-col>
             <v-col class="text-right" cols="6">
               <v-btn color="primary" rounded="0" elevation="0" @click="deleteDialog=true">Sterge</v-btn>
@@ -57,7 +57,7 @@ import axios from 'axios'
     },
     methods:{
       deleteNotification() {
-        axios.delete('https://psyhelp-api.oldstudioconcept.ro/notificari/', {
+        axios.delete('http://psyhelp-api.oldstudioconcept.ro/servicii/', {
             params: {
               id: this.id
             }

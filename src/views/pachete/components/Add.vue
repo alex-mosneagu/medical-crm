@@ -24,12 +24,18 @@
                     required
                   ></v-text-field>
                 </v-col>
-                  <v-col>
-                    <v-select
-                      label="Servicii"
-                      :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                    ></v-select>
-                  </v-col>
+                <v-col cols="12">
+                  <v-select
+                    multiple
+                    v-model="payload.servicii"
+                    label="servicii"
+                    required
+                    :items="servicii"
+                    item-title="nume"
+                    item-value="id"
+                    @update:modelValue="sumTotal"
+                  ></v-select>
+                </v-col>
               </v-row>
             </v-form>
           </v-card-text>
@@ -50,28 +56,49 @@
       data() {
         return{
           dialog: false,
+          servicii: [],
           payload: {
-            nume: null,
-            prenume: null,
-            specializare: null,
-            adresa: null,
-            telefon: null,
-            email: null,
+            denumire: null,
+            pret: null,
+            servicii: null,
           },
         }
       },
+      created(){
+        this.getServicii()
+      },
       methods: {
         save() {
-          axios.post('https://psyhelp-api.oldstudioconcept.ro/doctori/', this.payload)
-          .then((response) => {
+          axios.post('http://psyhelp-api.oldstudioconcept.ro/pachete/', this.payload)
+          .then(() => {
             this.dialog = false;
             this.$emit('refresh')
           }, (error) => {
             console.log(error);
           });
         },
+        getServicii() {
+          axios.get('http://psyhelp-api.oldstudioconcept.ro/servicii/no-pagination/')
+          .then((response) => {
+            this.servicii = response.data;
+          }, (error) => {
+            console.log(error);
+          });
+        },
         close() {
           this.dialog = false;
+        },
+        sumTotal(value){
+          var total = 0
+          if(value.length > 0){
+            value.map((x) => {
+              let item = this.servicii.find((y) => {
+                return x === y.id
+              })
+              total += parseInt(item.pret)
+            })
+          }
+          this.payload.pret = total
         }
       }
     }

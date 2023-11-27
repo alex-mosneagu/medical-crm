@@ -366,13 +366,13 @@ export default {
       let payload = {
         content: this.content[0]
       }
-      axios.put('http://psyhelp-api.oldstudioconcept.ro/contracte/', payload )
+      axios.put('https://psyhelp-api.oldstudioconcept.ro/contracte/', payload )
       .then((response) => {
         console.log(response)
       })
     },
     getData(value){
-      axios.get('http://psyhelp-api.oldstudioconcept.ro/contracte/')
+      axios.get('https://psyhelp-api.oldstudioconcept.ro/contracte/')
       .then((response) => {
         this.contracte = response.data
         this.content[0] = response.data[0].content

@@ -148,7 +148,7 @@ import axios from 'axios'
   
     methods:{
       editDoctor(){
-        axios.put('http://psyhelp-api.oldstudioconcept.ro/doctori', {
+        axios.put('https://psyhelp-api.oldstudioconcept.ro/doctori', {
             id: this.id,
             nume: this.payload.nume,
             prenume: this.payload.prenume,
@@ -163,7 +163,7 @@ import axios from 'axios'
         })
       },
       deleteDoctor(){
-        axios.delete('http://psyhelp-api.oldstudioconcept.ro/doctori/', {
+        axios.delete('https://psyhelp-api.oldstudioconcept.ro/doctori/', {
           params:{
             id: this.id
           }

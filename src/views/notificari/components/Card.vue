@@ -57,7 +57,7 @@ import axios from 'axios'
     },
     methods:{
       deleteNotification() {
-        axios.delete('http://psyhelp-api.oldstudioconcept.ro/notificari/', {
+        axios.delete('https://psyhelp-api.oldstudioconcept.ro/notificari/', {
             params: {
               id: this.id
             }

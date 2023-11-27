@@ -210,7 +210,7 @@
     },
     methods: {
       save() {
-        axios.post('http://psyhelp-api.oldstudioconcept.ro/evenimente/', this.payload)
+        axios.post('https://psyhelp-api.oldstudioconcept.ro/evenimente/', this.payload)
         .then((response) =>{
           this.dialog= false
           this.getData();
@@ -233,11 +233,11 @@
         this.payload.allDay = data.allDay
       },
       getData(){
-        axios.get('http://psyhelp-api.oldstudioconcept.ro/evenimente/')
+        axios.get('https://psyhelp-api.oldstudioconcept.ro/evenimente/')
         .then((response) => {
           this.calendarOptions.events = response.data;
         })
-        axios.get('http://psyhelp-api.oldstudioconcept.ro/evenimente/categorii/')
+        axios.get('https://psyhelp-api.oldstudioconcept.ro/evenimente/categorii/')
         .then((response) =>
         {
           this.categorii = response.data;
@@ -251,7 +251,7 @@
         this.viewDialog = true
       },
       deleteEvent(){
-        axios.delete('http://psyhelp-api.oldstudioconcept.ro/evenimente/',
+        axios.delete('https://psyhelp-api.oldstudioconcept.ro/evenimente/',
         {
           params:{
             id: this.viewData.id

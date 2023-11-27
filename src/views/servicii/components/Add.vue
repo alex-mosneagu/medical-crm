@@ -61,7 +61,7 @@
       },
       methods: {
         save() {
-          axios.post('http://psyhelp-api.oldstudioconcept.ro/servicii/', this.payload)
+          axios.post('https://psyhelp-api.oldstudioconcept.ro/servicii/', this.payload)
           .then((response) => {
             this.dialog = false;
             this.$emit('refresh')

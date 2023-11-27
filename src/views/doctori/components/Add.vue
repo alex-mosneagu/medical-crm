@@ -83,7 +83,7 @@
     },
     methods: {
       save() {
-        axios.post('http://psyhelp-api.oldstudioconcept.ro/doctori/', this.payload)
+        axios.post('https://psyhelp-api.oldstudioconcept.ro/doctori/', this.payload)
         .then((response) => {
           this.dialog = false;
           this.$emit('refresh')

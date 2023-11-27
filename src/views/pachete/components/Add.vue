@@ -69,7 +69,7 @@
       },
       methods: {
         save() {
-          axios.post('http://psyhelp-api.oldstudioconcept.ro/pachete/', this.payload)
+          axios.post('https://psyhelp-api.oldstudioconcept.ro/pachete/', this.payload)
           .then(() => {
             this.dialog = false;
             this.$emit('refresh')
@@ -78,7 +78,7 @@
           });
         },
         getServicii() {
-          axios.get('http://psyhelp-api.oldstudioconcept.ro/servicii/no-pagination/')
+          axios.get('https://psyhelp-api.oldstudioconcept.ro/servicii/no-pagination/')
           .then((response) => {
             this.servicii = response.data;
           }, (error) => {

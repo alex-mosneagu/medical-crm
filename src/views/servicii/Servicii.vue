@@ -7,7 +7,7 @@
           <add @refresh="getData" />
         </div>
         <v-row>
-          <v-col v-for="serviciu in servicii" :key="serviciu.id" cols="6">
+          <v-col v-for="serviciu in servicii" sm="12" md="6"  cols="12">
             <card :title="serviciu.nume" :content="serviciu.descriere" :date="serviciu.pret" :id="serviciu.id" @refresh="getData"/>
           </v-col>
       </v-row> 

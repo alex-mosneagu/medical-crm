@@ -1,5 +1,5 @@
 <template>
-    <div class="mb-8">
+    <div v-if="$vuetify.display.smAndUp" class="mb-8">
       <v-row>
         <v-col cols="3">
           <v-row>

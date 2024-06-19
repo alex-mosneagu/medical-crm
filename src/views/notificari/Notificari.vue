@@ -4,7 +4,7 @@
       <navbar />
       <filters />
       <v-row>
-        <v-col v-for='notifcare in notificari' cols="6">
+        <v-col v-for='notifcare in notificari' sm="12" md="6" cols="12">
           <card :title="notifcare.location" :content="notifcare.content" :date="notifcare.created_at" :id="notifcare.id" @refresh="getData"/>
         </v-col>
       </v-row> 

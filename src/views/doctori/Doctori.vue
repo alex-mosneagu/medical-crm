@@ -9,7 +9,7 @@
       <add @refresh="getData" />
     </div>
     <v-row>
-      <v-col v-for="doctor in doctori" cols="3">
+      <v-col v-for="doctor in doctori" sm="12" md="3">
         <card :nume="doctor.nume" :prenume="doctor.prenume" :id="doctor.id" :specializare="doctor.specializare" :email="doctor.email" :telefon="doctor.telefon" :adresa="doctor.adresa" @refresh="getData"/>
       </v-col>
     </v-row>

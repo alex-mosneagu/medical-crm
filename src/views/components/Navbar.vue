@@ -1,5 +1,5 @@
 <template>
-    <nav class="mb-10">
+    <nav v-if="$vuetify.display.smAndUp" class="mb-10">
       <div class="w-75">
         <input type="search" placeholder="Search pathology results">
       </div>

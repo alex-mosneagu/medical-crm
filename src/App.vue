@@ -30,6 +30,13 @@
     width: calc(100% - 310px);
     margin-left: auto;
   }
+  @media all and (max-width: 780px){
+    .container-hero{
+      width: 100%;
+      padding: 20px;
+      padding-top: 110px;
+    }
+  }
   .c-pointer{
     cursor: pointer;
   }

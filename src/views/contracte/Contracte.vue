@@ -39,6 +39,7 @@ export default {
     return {
       // This is where the pages content is stored and synced
       content: [],
+      newDoc: false,
       contracte: null,
       selected_contract: null,
       zoom: 0.8,
@@ -131,7 +132,7 @@ export default {
     menu () {
       return [
         // Main commands
-        { text: "New", title: "New", icon: "description", click: () => { if(confirm("This will create an empty document. Are you sure?")){ this.content = [""]; this.resetContentHistory(); } } },
+        { text: "New", title: "New", icon: "description", click: () => { if(confirm("This will create an empty document. Are you sure?")){ this.content = [""]; this.newDoc = true; this.resetContentHistory(); } } },
         { text: "Print", title: "Print", icon: "print", click: () => window.print() },
 
         { is: "spacer" },
@@ -366,10 +367,12 @@ export default {
       let payload = {
         content: this.content[0]
       }
-      axios.put('https://psyhelp-api.oldstudioconcept.ro/contracte/', payload )
-      .then((response) => {
-        console.log(response)
-      })
+      if(!this.newDoc){
+        axios.put('https://psyhelp-api.oldstudioconcept.ro/contracte/', payload )
+        .then((response) => {
+          console.log(response)
+        })
+      }
     },
     getData(value){
       axios.get('https://psyhelp-api.oldstudioconcept.ro/contracte/')

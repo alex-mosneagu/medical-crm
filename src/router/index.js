@@ -3,13 +3,14 @@ import Login from '../views/Login.vue'
 import Dashboard from '../views/Dashboard.vue'
 import Programari from '../views/programari/Programari.vue'
 import Doctori from '../views/doctori/Doctori.vue'
+import DoctoriIstoric from '../views/doctori/DoctoriIstoric.vue'
 import Pacienti from '../views/pacienti/Pacienti.vue'
 import Profile from '../views/profile/Profile.vue'
 import Notificari from '../views/notificari/Notificari.vue'
 import Servicii from '../views/servicii/Servicii.vue'
 import Pachete from '../views/pachete/Pachete.vue'
 import Contracte from '../views/contracte/Contracte.vue'
-
+import ConfirmaProgramarea from '../views/ConfirmaProgramarea.vue'
 const routes = createRouter({
     history: createWebHistory(),
     routes: [
@@ -33,6 +34,14 @@ const routes = createRouter({
             path: "/doctori",
             name: "Doctori",
             component: Doctori,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: "/doctori/:id",
+            name: "DoctoriIstoric",
+            component: DoctoriIstoric,
             meta: {
                 requiresAuth: true
             }
@@ -89,6 +98,11 @@ const routes = createRouter({
             path: "/login",
             name: "Login",
             component: Login
+        },
+        {
+            path: "/confirma-programarea",
+            name: "ConfirmaProgramarea",
+            component: ConfirmaProgramarea
         },
     ]
 })

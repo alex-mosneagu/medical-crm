@@ -3,7 +3,23 @@
 
   <section class="container-hero">
     <navbar />
-    <h5 class="text-primary ">Programari</h5>
+    <div class="d-flex align-center justify-space-between mb-4">  
+      <h5 class="text-primary">Programari</h5>
+      <div class="filters d-flex">
+        <div class="form-element">
+          <select v-model="staffFilter" name="staffFilter" id="staffFilter" @change="getEventsFilter">
+            <option value="0">Toti din Staff</option>
+            <option v-for="item in staffComplet" :value="item.id">{{ item.nume }}</option>
+          </select>
+        </div>
+        <div class="form-element">
+          <select v-model="serviciuFilter" name="serviciuFilter" id="serviciuFilter" @change="getEventsFilter">
+            <option value="0">Toate Serviciile</option>
+            <option v-for="item in servicii" :value="item.id">{{ item.nume }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
     <FullCalendar 
     :options='calendarOptions'
     />
@@ -21,16 +37,46 @@
         <v-form ref="form">
             <v-row>
               <v-col cols="12">
-                <v-text-field
-                  v-model="payload.title"
-                  label="Title"
-                  required
-                ></v-text-field>
                 <v-select
                   v-model="payload.categorie"
                   label="Categorie"
                   required
                   :items="categorii"
+                  item-title="nume"
+                  item-value="id"
+                  @input="getStaff"
+                ></v-select>
+                <v-text-field
+                  v-if="payload.categorie == 3"
+                  v-model="payload.title"
+                  label="Title"
+                  required
+                ></v-text-field>
+                <v-select
+                  v-if="payload.categorie != 3"
+                  v-model="payload.staff"
+                  label="Staff"
+                  required
+                  :items="staff"
+                  item-title="nume"
+                  item-value="id"
+                ></v-select>
+                <v-select
+                  v-if="payload.categorie != 3"
+                  v-model="payload.pacient"
+                  label="Pacient"
+                  required
+                  :items="pacienti"
+                  item-title="nume"
+                  item-value="id"
+                  @input="checkIfAddPacient"
+                ></v-select>
+                <v-select
+                  v-if="payload.categorie != 3"
+                  v-model="payload.serviciu"
+                  label="Serviciu"
+                  required
+                  :items="servicii"
                   item-title="nume"
                   item-value="id"
                 ></v-select>
@@ -53,6 +99,7 @@
                 <v-text-field
                   v-model="payload.start"
                   type="datetime-local"
+                  @change="autoSetEnd"
                   required
                 ></v-text-field>
               </v-col>
@@ -89,7 +136,9 @@
         <v-icon icon="mdi-close" @click="viewDialog= false"></v-icon>
       </v-card-title>
       <v-card-text>
-        <p>{{ viewData.start }} - {{ viewData.end }}</p>
+        <p><strong>Status</strong>: <span class="text-red">Neconfirmat</span></p>
+        <p><strong>Interval Programare</strong>: {{ viewData.start }} - {{ viewData.end }}</p>
+        <p><strong>Link Confirmare</strong>: <a href="http://localhost:5173/confirma-programarea" target="_blank">Click aici</a></p>
       </v-card-text>
       <v-row class="mt-4">
         <v-col cols="6">
@@ -124,6 +173,7 @@
       </v-card>
     </v-dialog>
   </section>
+  <add :hideButton="true" :showDialog="addPacientDialog" @refresh="getData"/>
 </template>
 
 <script>
@@ -135,6 +185,7 @@
   import interactionPlugin from '@fullcalendar/interaction'
   import listPlugin from '@fullcalendar/list'
   import Navbar from '../components/Navbar.vue'
+  import Add from '../pacienti/components/Add.vue';
 
 
   export default {
@@ -142,7 +193,22 @@
     components: {
       Sidebar,
       FullCalendar,
-      Navbar
+      Navbar,
+      Add
+    },
+    watch: {
+      'payload.categorie': {
+        handler () {
+          this.getStaff()
+        },
+        deep: true
+      },
+      'payload.pacient': {
+        handler () {
+          this.checkIfAddPacient()
+        },
+        deep: true
+      }
     },
     data() {
       return{
@@ -150,6 +216,13 @@
         viewDialog: false,
         stergeEvent: false,
         categorii: [],
+        pacienti: [],
+        staff: [],
+        staffComplet: [],
+        servicii: [],
+        staffFilter: 0,
+        serviciuFilter: 0,
+        addPacientDialog: false,
         viewData: {
           id: null,
           title: null,
@@ -162,7 +235,8 @@
           start: null,
           end: null,
           allDay: false,
-          categorie: null
+          categorie: null,
+          pacient: null
         },
         calendarOptions: {
           locale: 'ro',
@@ -187,7 +261,7 @@
               title: 'New Event',
               start: arg.start,
               end: arg.end,
-              allDay: arg.allDay,
+              allDay: false,
               backgroundColor: '#ccc',
               borderColor: '#ccc'
             })
@@ -210,6 +284,12 @@
     },
     methods: {
       save() {
+        if(this.payload.title == null){
+          let pacientSelectat = this.pacienti.find((item) => item.id == this.payload.pacient)
+          let staffSelect = this.staff.find((item) => item.id == this.payload.staff)
+          let serviciuSelectat = this.servicii.find((item) => item.id == this.payload.serviciu)
+          this.payload.title = pacientSelectat.nume + " - " + staffSelect.nume + " - " + serviciuSelectat.nume
+        }
         axios.post('https://psyhelp-api.oldstudioconcept.ro/evenimente/', this.payload)
         .then((response) =>{
           this.dialog= false
@@ -222,7 +302,14 @@
         this.getData();
       },  
       addEvent(data) {
+        let pacientiTemp = {
+          id: 0,
+          nume: "Adauga Pacient"
+        }
+        this.pacienti.unshift(pacientiTemp)
         this.dialog = true
+        data.allDay = false
+        console.log(data)
         if(!data.allDay){
           this.payload.start = data.startStr.replace('+03:00', '')
           this.payload.end = data.endStr.replace('+03:00', '')
@@ -230,11 +317,17 @@
           this.payload.start = data.startStr
           this.payload.end = data.endStr
         }
-        this.payload.allDay = data.allDay
+        this.payload.allDay = false
       },
       getData(){
         axios.get('https://psyhelp-api.oldstudioconcept.ro/evenimente/')
         .then((response) => {
+          response.data.forEach((item) => {
+            if(item.isConfirmed == 0){
+              item.backgroundColor = 'red'
+              item.borderColor = 'red'
+            }
+          })
           this.calendarOptions.events = response.data;
         })
         axios.get('https://psyhelp-api.oldstudioconcept.ro/evenimente/categorii/')
@@ -242,6 +335,42 @@
         {
           this.categorii = response.data;
         })
+        axios.get('https://psyhelp-api.oldstudioconcept.ro/pacienti/',{
+          params:{
+            skip: 0,
+            take: 100,
+          }
+        })
+        .then((response) => {
+          this.pacienti = response.data.paginatedResults;
+        })
+        axios.get('https://psyhelp-api.oldstudioconcept.ro/servicii/',
+        {
+          params:{
+            skip: 0,
+            take: 200,
+          }
+        }
+        )
+        .then((response) => {
+          this.servicii = response.data.paginatedResults;
+        }, (error) => {
+          console.log(error);
+        });
+        
+        axios.get('https://psyhelp-api.oldstudioconcept.ro/doctori/',
+        {
+          params:{
+            skip: 0,
+            take: 200,
+          }
+        }
+        )
+        .then((response) => {
+          this.staffComplet = response.data.paginatedResults;
+        }, (error) => {
+          console.log(error);
+        });
       },
       viewEvent(data){
         this.viewData.title = data.event.title
@@ -261,6 +390,74 @@
           this.stergeEvent = false
           this.getData()
         })
+      },
+      autoSetEnd() {
+        // Convert the start time to a Date object
+        let startDate = new Date(this.payload.start);
+        
+        // Add 30 minutes to the start date
+        startDate.setMinutes(startDate.getMinutes() + 30);
+
+        // Function to format the date as YYYY-MM-DDTHH:MM
+        function formatDate(date) {
+            let year = date.getFullYear();
+            let month = String(date.getMonth() + 1).padStart(2, '0');
+            let day = String(date.getDate()).padStart(2, '0');
+            let hours = String(date.getHours()).padStart(2, '0');
+            let minutes = String(date.getMinutes()).padStart(2, '0');
+            
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
+
+        // Assign the end time to the payload
+        this.payload.end = formatDate(startDate);
+      },
+      getStaff() {
+        this.staff = []
+        this.payload.staff = null
+        axios.get('https://psyhelp-api.oldstudioconcept.ro/doctori/categorie/', {
+          params: {
+            categorie: this.payload.categorie
+          }
+        }).then((response) => {
+          this.staff = response.data.paginatedResults
+        })
+      },
+      getEventsFilter() {
+        if(this.staffFilter == 0 &&  this.serviciuFilter == 0){
+          axios.get('https://psyhelp-api.oldstudioconcept.ro/evenimente/')
+          .then((response) => {
+            response.data.forEach((item) => {
+              if(item.isConfirmed == 0){
+                item.backgroundColor = 'red'
+                item.borderColor = 'red'
+              }
+            })
+            this.calendarOptions.events = response.data;
+          })
+        }else{
+          axios.get('https://psyhelp-api.oldstudioconcept.ro/evenimente/filtre/',{
+            params: {
+              staff: this.staffFilter,
+              serviciu: this.serviciuFilter
+            }
+          })
+          .then((response) => {
+            response.data.forEach((item) => {
+              if(item.isConfirmed == 0){
+                item.backgroundColor = 'red'
+                item.borderColor = 'red'
+              }
+            })
+            this.calendarOptions.events = response.data;
+          })
+        }
+      },
+      checkIfAddPacient(){
+        if(this.payload.pacient == 0){
+          this.addPacientDialog = true
+          this.payload.pacient = null
+        }
       }
     }
   }
@@ -297,6 +494,19 @@
       }
       &:focus{
         box-shadow: none !important;
+      }
+    }
+  }
+  .filters{
+    gap: 10px;
+    .form-element{
+      select{
+        border: 1px solid silver;
+        padding-left: 15px;
+        min-width: 150px;
+        height: 40px;
+        font-size: 14px;
+        border-radius: 25px;
       }
     }
   }

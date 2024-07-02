@@ -30,7 +30,7 @@
             <div class="icon">
               <img :src="pacientiIcon" alt="">
             </div>
-            <div class="text">Doctori</div>
+            <div class="text">Staff</div>
           </router-link>
         </div>
         <div class="item">

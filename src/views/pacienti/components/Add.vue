@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn color="primary" class="text-normal rounded-pill" elevation="0" @click="dialog = true">Adauga</v-btn>
+    <v-btn v-if="!hideAddButton" color="primary" class="text-normal rounded-pill" elevation="0" @click="dialog = true">Adauga</v-btn>
     <v-dialog v-model="dialog" max-width="640px">
       <v-card>
         <v-card-title>
@@ -61,16 +61,26 @@
   import axios from 'axios'
   export default {
     name: 'Add',
+    props: ['hideButton', 'showDialog'],
     data() {
       return{
-        dialog: false,
+        dialog: this.showDialog ?? false,
         payload: {
           nume: null,
           prenume: null,
           adresa: null,
           telefon: null,
           email: null,
-        }
+        },
+        hideAddButton: this.hideButton ?? false
+      }
+    },
+    watch: {
+      'showDialog': {
+        handler () {
+          this.dialog = this.showDialog
+        },
+        deep: true
       }
     },
     methods: {

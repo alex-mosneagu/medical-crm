@@ -4,7 +4,7 @@
     <v-dialog v-model="dialog" max-width="640px">
       <v-card>
         <v-card-title>
-          <span class="text-h5">Adauga doctor</span>
+          <span class="text-h5">Adauga Staff</span>
         </v-card-title>
         <v-card-text>
           <v-form ref="form">
@@ -24,11 +24,14 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="6">
-                <v-text-field
+                <v-select
                   v-model="payload.specializare"
                   label="Specializare"
                   required
-                ></v-text-field>
+                  :items="specializari"
+                  item-title="nume"
+                  item-value="id"
+                ></v-select>
               </v-col>
               <v-col cols="6">
                 <v-text-field
@@ -50,6 +53,22 @@
                   label="Email"
                   required
                 ></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field v-model="color" v-mask="mask" hide-details class="ma-0 pa-0" solo>
+                  <template v-slot:append>
+                    <v-menu v-model="menu" top nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
+                      <template v-slot:activator="{ on }">
+                        <div @click="menu = !menu" :style="swatchStyle" v-on="on" />
+                      </template>
+                      <v-card>
+                        <v-card-text class="pa-0">
+                          <v-color-picker v-model="color" flat />
+                        </v-card-text>
+                      </v-card>
+                    </v-menu>
+                  </template>
+                </v-text-field>
               </v-col>
             </v-row>
           </v-form>
@@ -79,6 +98,32 @@
           telefon: null,
           email: null,
         },
+        color: '#1976D2FF',
+        mask: '!#XXXXXXXX',
+        menu: false,
+        specializari: [
+          {
+            id: 1,
+            nume: "Psiholog"
+          },
+          {
+            id: 2,
+            nume: "Psihiatru"
+          }
+        ]
+      }
+    },
+    computed: {
+      swatchStyle() {
+        const { color, menu } = this
+        return {
+          backgroundColor: color,
+          cursor: 'pointer',
+          height: '30px',
+          width: '30px',
+          borderRadius: menu ? '50%' : '4px',
+          transition: 'border-radius 200ms ease-in-out'
+        }
       }
     },
     methods: {

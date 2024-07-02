@@ -28,10 +28,17 @@
         <img src="https://via.placeholder.com/150" alt="">
       </div>
       <p class="nume-pacient text-center font-weight-bold text-subtitle-1">{{ nume }} {{ prenume }}</p>
-      <p class="text-center text-primary text-1 text-body-2">{{ specializare }}</p>
+      <p class="text-center text-primary text-1 text-body-2">
+        <span v-if="specializare == 1">
+          Psiholog
+        </span>
+        <span v-else>
+          Psihiatru
+        </span>
+      </p>
       <v-divider class="my-6 mb-8"></v-divider>
       <v-btn block class="mb-4 rounded-pill btn-primary" elevation="0">Programari</v-btn>
-      <v-btn block color="secondary" class="text-white rounded-pill" elevation="0">Informatii</v-btn>
+      <v-btn :to="'/doctori/' + id" block color="secondary" class="text-white rounded-pill" elevation="0">Istoric</v-btn>
     </div>
   </div>
   <v-dialog

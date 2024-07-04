@@ -69,7 +69,7 @@
     >
     <v-card class="pa-5">
       <v-card-title class="d-flex justify-space-between">
-        <h2>Editeaza doctor</h2>
+        <h2>Editeaza staff</h2>
         <v-icon icon="fas fa-times" @click="editDialog=false"></v-icon>
       </v-card-title>
       <v-card-text>
@@ -90,11 +90,14 @@
               ></v-text-field>
             </v-col>
             <v-col cols="6">
-              <v-text-field
+              <v-select
                 v-model="payload.specializare"
                 label="Specializare"
                 required
-              ></v-text-field>
+                :items="specializari"
+                item-title="nume"
+                item-value="id"
+              ></v-select>
             </v-col>
             <v-col cols="6">
               <v-text-field
@@ -116,6 +119,22 @@
                 label="Email"
                 required
               ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field v-model="color" v-mask="mask" hide-details class="ma-0 pa-0" solo>
+                <template v-slot:append>
+                  <v-menu v-model="menu" top nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
+                    <template v-slot:activator="{ on }">
+                      <div @click="menu = !menu" :style="swatchStyle" v-on="on" />
+                    </template>
+                    <v-card>
+                      <v-card-text class="pa-0">
+                        <v-color-picker v-model="color" flat />
+                      </v-card-text>
+                    </v-card>
+                  </v-menu>
+                </template>
+              </v-text-field>
             </v-col>
           </v-row>
           <v-row>
@@ -141,18 +160,44 @@ import axios from 'axios'
       return{
         dialog: false,
         editDialog: false,
-        payload: {
-          nume: this.nume,
-          prenume: this.prenume,
-          specializare: this.specializare,
-          adresa: this.adresa,
-          telefon: this.telefon,
-          email: this.email,
-          
-        }
+        payload: {},
+        color: '#1976D2FF',
+        mask: '!#XXXXXXXX',
+        menu: false,
+        specializari: [
+          {
+            id: 1,
+            nume: "Psiholog"
+          },
+          {
+            id: 2,
+            nume: "Psihiatru"
+          }
+        ]
       }
     },
-  
+    created() {
+      console.log(this.specializare)
+      this.payload.nume = this.nume
+      this.payload.prenume = this.prenume
+      this.payload.specializare = parseInt(this.specializare)
+      this.payload.adresa = this.adresa
+      this.payload.telefon = this.telefon
+      this.payload.email = this.email
+    },
+    computed: {
+      swatchStyle() {
+        const { color, menu } = this
+        return {
+          backgroundColor: color,
+          cursor: 'pointer',
+          height: '30px',
+          width: '30px',
+          borderRadius: menu ? '50%' : '4px',
+          transition: 'border-radius 200ms ease-in-out'
+        }
+      },
+    },
     methods:{
       editDoctor(){
         axios.put('https://psyhelp-api.oldstudioconcept.ro/doctori', {

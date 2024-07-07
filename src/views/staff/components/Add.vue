@@ -55,7 +55,7 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-text-field v-model="color" v-mask="mask" hide-details class="ma-0 pa-0" solo>
+                <v-text-field v-model="payload.color" v-mask="mask" hide-details class="ma-0 pa-0" solo>
                   <template v-slot:append>
                     <v-menu v-model="menu" top nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
                       <template v-slot:activator="{ on }">
@@ -63,7 +63,7 @@
                       </template>
                       <v-card>
                         <v-card-text class="pa-0">
-                          <v-color-picker v-model="color" flat />
+                          <v-color-picker v-model="payload.color" flat />
                         </v-card-text>
                       </v-card>
                     </v-menu>
@@ -97,8 +97,8 @@
           adresa: null,
           telefon: null,
           email: null,
+          color: '#1976D2FF',
         },
-        color: '#1976D2FF',
         mask: '!#XXXXXXXX',
         menu: false,
         specializari: [
@@ -115,21 +115,20 @@
     },
     computed: {
       swatchStyle() {
-        const { color, menu } = this
         return {
-          backgroundColor: color,
+          backgroundColor: this.payload.color,
           cursor: 'pointer',
           height: '30px',
           width: '30px',
-          borderRadius: menu ? '50%' : '4px',
+          borderRadius: this.menu ? '50%' : '4px',
           transition: 'border-radius 200ms ease-in-out'
         }
       }
     },
     methods: {
       save() {
-        axios.post('https://psyhelp-api.oldstudioconcept.ro/doctori/', this.payload)
-        .then((response) => {
+        axios.post('https://psyhelp-api.oldstudioconcept.ro/staff', this.payload)
+        .then(() => {
           this.dialog = false;
           this.$emit('refresh')
         }, (error) => {

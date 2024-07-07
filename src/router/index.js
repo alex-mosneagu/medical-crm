@@ -2,8 +2,8 @@ import {createRouter, createWebHistory} from 'vue-router'
 import Login from '../views/Login.vue'
 import Dashboard from '../views/Dashboard.vue'
 import Programari from '../views/programari/Programari.vue'
-import Doctori from '../views/doctori/Doctori.vue'
-import DoctoriIstoric from '../views/doctori/DoctoriIstoric.vue'
+import Staff from '../views/staff/Staff.vue'
+import StaffIstoric from '../views/staff/StaffIstoric.vue'
 import Pacienti from '../views/pacienti/Pacienti.vue'
 import Profile from '../views/profile/Profile.vue'
 import Notificari from '../views/notificari/Notificari.vue'
@@ -31,17 +31,17 @@ const routes = createRouter({
             }
         },
         {
-            path: "/doctori",
-            name: "Doctori",
-            component: Doctori,
+            path: "/staff",
+            name: "Staff",
+            component: Staff,
             meta: {
                 requiresAuth: true
             }
         },
         {
-            path: "/doctori/:id",
-            name: "DoctoriIstoric",
-            component: DoctoriIstoric,
+            path: "/staff/:id",
+            name: "StaffIstoric",
+            component: StaffIstoric,
             meta: {
                 requiresAuth: true
             }

@@ -358,7 +358,7 @@
           console.log(error);
         });
         
-        axios.get('https://psyhelp-api.oldstudioconcept.ro/doctori/',
+        axios.get('https://psyhelp-api.oldstudioconcept.ro/staff',
         {
           params:{
             skip: 0,
@@ -415,7 +415,7 @@
       getStaff() {
         this.staff = []
         this.payload.staff = null
-        axios.get('https://psyhelp-api.oldstudioconcept.ro/doctori/categorie/', {
+        axios.get('https://psyhelp-api.oldstudioconcept.ro/staff/categorie', {
           params: {
             categorie: this.payload.categorie
           }

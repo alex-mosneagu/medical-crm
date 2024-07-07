@@ -3,16 +3,25 @@
 
   <section class="container-hero">
     <navbar />
-    <filters @refresh="changeColumns"/>
-    <h5 class="text-primary mb-4">Staff</h5>
-    <div class="filters mb-6">
-      <add @refresh="getData" />
-    </div>
-    <v-row>
-      <v-col v-for="doctor in doctori" sm="12" md="3">
-        <card :nume="doctor.nume" :prenume="doctor.prenume" :id="doctor.id" :specializare="doctor.specializare" :email="doctor.email" :telefon="doctor.telefon" :adresa="doctor.adresa" @refresh="getData"/>
-      </v-col>
-    </v-row>
+    <h5 class="text-primary mb-4">Istoric Doctor</h5>
+    <v-table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Pacient</th>
+          <th>Serviciu</th>
+          <th>Data</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Mosneagu Alex</td>
+          <td>Test 1</td>
+          <td>29/06/2024 11:00:00</td>
+        </tr>
+      </tbody>
+    </v-table>
     <v-pagination
       v-model="page"
       :length="pagination"
@@ -62,7 +71,7 @@
         this.getData();
       },
       getData(value) {
-        axios.get('https://psyhelp-api.oldstudioconcept.ro/doctori/',
+        axios.get('https://psyhelp-api.oldstudioconcept.ro/staff',
         {
           params:{
             skip: (this.page - 1) * this.take,

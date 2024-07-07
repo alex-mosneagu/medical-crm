@@ -26,7 +26,7 @@
           </router-link>
         </div>
         <div class="item">
-          <router-link to="/doctori">
+          <router-link to="/staff">
             <div class="icon">
               <img :src="pacientiIcon" alt="">
             </div>
@@ -104,7 +104,7 @@
             </router-link>
           </div>
           <div class="item">
-            <router-link to="/doctori">
+            <router-link to="/staff">
               <div class="icon">
                 <img :src="pacientiIcon" alt="">
               </div>

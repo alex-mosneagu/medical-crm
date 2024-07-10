@@ -72,7 +72,7 @@
                   @input="checkIfAddPacient"
                 ></v-select>
                 <v-select
-                  v-if="payload.categorie != 3"
+                  v-if="payload.categorie != 3 && !payload.pachet"
                   v-model="payload.serviciu"
                   label="Serviciu"
                   required
@@ -80,6 +80,16 @@
                   item-title="nume"
                   item-value="id"
                 ></v-select>
+                <v-select
+                  v-if="payload.categorie != 3 && payload.pachet"
+                  v-model="payload.serviciu"
+                  label="Pachet"
+                  required
+                  :items="pachete"
+                  item-title="nume"
+                  item-value="id"
+                ></v-select>
+                <v-checkbox v-model="payload.pachet" label="Pachet"></v-checkbox>
               </v-col>
               <v-col v-if="payload.allDay" cols="6">
                 <v-text-field
@@ -96,19 +106,10 @@
                 ></v-text-field>
               </v-col>
               <v-col v-if="!payload.allDay" cols="6">
-                <v-text-field
-                  v-model="payload.start"
-                  type="datetime-local"
-                  @change="autoSetEnd"
-                  required
-                ></v-text-field>
+                <Datepicker v-model="payload.start" @update:modelValue="autoSetEnd" />
               </v-col>
               <v-col v-if="!payload.allDay" cols="6">
-                <v-text-field
-                  v-model="payload.end"
-                  type="datetime-local"
-                  required
-                ></v-text-field>
+                <Datepicker v-model="payload.end"  />
               </v-col>
               <v-col cols="12">
                 <v-checkbox v-model="payload.allDay" label="All day"></v-checkbox>
@@ -186,7 +187,8 @@
   import listPlugin from '@fullcalendar/list'
   import Navbar from '../components/Navbar.vue'
   import Add from '../pacienti/components/Add.vue';
-
+  import Datepicker from '@vuepic/vue-datepicker';
+  import '@vuepic/vue-datepicker/dist/main.css';
 
   export default {
     name: 'Programari',
@@ -194,7 +196,8 @@
       Sidebar,
       FullCalendar,
       Navbar,
-      Add
+      Add,
+      Datepicker
     },
     watch: {
       'payload.categorie': {
@@ -220,6 +223,7 @@
         staff: [],
         staffComplet: [],
         servicii: [],
+        pachete: [],
         staffFilter: 0,
         serviciuFilter: 0,
         addPacientDialog: false,
@@ -236,27 +240,29 @@
           end: null,
           allDay: false,
           categorie: null,
-          pacient: null
+          pacient: null,
+          pachet: false
         },
         calendarOptions: {
           locale: 'ro',
           plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
           initialView: 'dayGridMonth',
           headerToolbar: {
-            left: 'title',
+            left: 'prev,next today',
+            center: 'title',
             right: 'timeGridDay,dayGridWeek,dayGridMonth'
           },
           buttonText: {
             today: 'Astazi',
             day: 'Azi',
-            week:'Saptamana',
-            month:'Luna'
+            week: 'Saptamana',
+            month: 'Luna'
           },
           selectable: true,
           editable: true,
           select: (arg) => {
-            const cal = arg.view.calendar
-            cal.unselect()
+            const cal = arg.view.calendar;
+            cal.unselect();
             cal.addEvent({
               title: 'New Event',
               start: arg.start,
@@ -264,17 +270,17 @@
               allDay: false,
               backgroundColor: '#ccc',
               borderColor: '#ccc'
-            })
-            this.addEvent(arg)
+            });
+            this.addEvent(arg);
           },
           eventClick: (arg) => {
-            this.viewEvent(arg)
+            this.viewEvent(arg);
           },
           eventDrop: (arg) => {
-            alert(arg.event.title + " was dropped on " + arg.event.start)
+            alert(arg.event.title + " was dropped on " + arg.event.start);
           },
           eventResize: (arg) => {
-            alert(arg.event.title + " was resized to " + arg.event.end)
+            alert(arg.event.title + " was resized to " + arg.event.end);
           }
         }
       }
@@ -309,7 +315,6 @@
         this.pacienti.unshift(pacientiTemp)
         this.dialog = true
         data.allDay = false
-        console.log(data)
         if(!data.allDay){
           this.payload.start = data.startStr.replace('+03:00', '')
           this.payload.end = data.endStr.replace('+03:00', '')
@@ -357,8 +362,21 @@
         }, (error) => {
           console.log(error);
         });
+        axios.get('https://psyhelp-api.oldstudioconcept.ro/pachete/',
+        {
+          params:{
+            skip: 0,
+            take: 200,
+          }
+        }
+        )
+        .then((response) => {
+          this.pachete = response.data.paginatedResults;
+        }, (error) => {
+          console.log(error);
+        });
         
-        axios.get('https://psyhelp-api.oldstudioconcept.ro/staff',
+        axios.get('https://psyhelp-api.oldstudioconcept.ro/doctori/',
         {
           params:{
             skip: 0,
@@ -415,7 +433,7 @@
       getStaff() {
         this.staff = []
         this.payload.staff = null
-        axios.get('https://psyhelp-api.oldstudioconcept.ro/staff/categorie', {
+        axios.get('https://psyhelp-api.oldstudioconcept.ro/doctori/categorie/', {
           params: {
             categorie: this.payload.categorie
           }
@@ -495,6 +513,42 @@
       &:focus{
         box-shadow: none !important;
       }
+    }
+  }
+  .fc-toolbar-chunk:nth-child(1){
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    button{
+      border: 1px solid #ccc !important;
+      height: 40px !important;
+      font-size: 13px !important;
+      min-width: 50px;
+      padding: 0px 15px;
+      background-color: #fff !important;
+      color: #000 !important;
+      outline: 0 !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      span{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      &.fc-button-active{
+        background-color: #F17422 !important;
+        color: #fff !important;
+        border-color: #F17422 !important;
+      }
+      &:focus{
+        box-shadow: none !important;
+      }
+    }
+    button[title="This Luna"]{
+      background-color: #F17422 !important;
+      color: #fff !important;
+      border-color: #F17422 !important;
     }
   }
   .filters{

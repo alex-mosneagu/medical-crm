@@ -10,7 +10,7 @@
     </div>
     <v-row>
       <v-col v-for="doctor in doctori" sm="12" md="3">
-        <card :nume="doctor.nume" :prenume="doctor.prenume" :id="doctor.id" :specializare="doctor.specializare" :email="doctor.email" :telefon="doctor.telefon" :adresa="doctor.adresa" @refresh="getData"/>
+        <card :nume="doctor.nume" :prenume="doctor.prenume" :id="doctor.id" :specializare="doctor.specializare" :email="doctor.email" :color="doctor.color" :telefon="doctor.telefon" :adresa="doctor.adresa" @refresh="getData"/>
       </v-col>
     </v-row>
     <v-pagination
@@ -62,7 +62,7 @@
         this.getData();
       },
       getData() {
-        axios.get('https://psyhelp-api.oldstudioconcept.ro/staff',
+        axios.get('https://psyhelp-api.oldstudioconcept.ro/doctori/',
         {
           params:{
             skip: (this.page - 1) * this.take,
@@ -71,8 +71,8 @@
         }
         )
         .then((response) => {
-          this.doctori = response.data.data.paginatedResults;
-          this.pagination = Math.ceil(response.data.data.total / this.take);
+          this.doctori = response.data.paginatedResults;
+          this.pagination = Math.ceil(response.data.total / this.take);
         }, (error) => {
           console.log(error);
         });

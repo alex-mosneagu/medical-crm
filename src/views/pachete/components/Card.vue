@@ -4,11 +4,11 @@
         <div class="options">
           <v-menu>
             <template v-slot:activator="{props}">
-              <!-- <v-btn 
+              <v-btn 
               v-bind="props"
               icon elevation="0">
                 <i class="fas fa-ellipsis-h"></i>
-              </v-btn> -->
+              </v-btn>
             </template>
             <v-list>
               <v-list-item class="c-pointer" @click="editDialog=true">
@@ -27,10 +27,10 @@
         <div class="image mb-4">
           <img src="https://via.placeholder.com/150" alt="">
         </div>
-        <p class="nume-pacient text-center font-weight-bold text-subtitle-1">{{ nume }} {{ prenume }}</p>
-        <p class="text-center text-primary text-1 text-body-2">{{ specializare }} RON</p>
+        <p class="nume-pacient text-center font-weight-bold text-subtitle-1">{{ nume }}</p>
+        <p class="text-center text-primary text-1 text-body-2">{{ pret }} RON</p>
         <v-divider class="my-6 mb-8"></v-divider>
-        <v-btn block color="secondary" class="text-white rounded-pill" elevation="0">Informatii</v-btn>
+        <v-btn block color="secondary" class="text-white rounded-pill" elevation="0" @click="infoDialog = true">Informatii</v-btn>
       </div>
     </div>
     <v-dialog
@@ -39,17 +39,17 @@
       >
       <v-card class="pa-5" >
         <v-card-title class="d-flex justify-space-between">
-          <h2>Sterge doctor</h2>
+          <h2>Sterge pachet</h2>
           <v-icon icon="fas fa-times" @click="dialog=false"></v-icon>
         </v-card-title>
           <v-card-text>
-            <p>Esti sigur ca vrei sa stergi doctorul {{nume}} {{prenume}} ?</p>
+            <p>Esti sigur ca vrei sa stergi pachetul {{nume}} ?</p>
             <v-row class="mt-6">
               <v-col cols="6">
                 <v-btn class="btn-primary" elevation="0" rounded="0" block @click="dialog = false">Nu</v-btn>
               </v-col>
               <v-col cols="6">
-                <v-btn block color="primary" rounded="0" elevation="0" @click="deleteDoctor">Da</v-btn>
+                <v-btn block color="primary" rounded="0" elevation="0" @click="deletePachet">Da</v-btn>
               </v-col>
             </v-row>
           </v-card-text>
@@ -61,64 +61,91 @@
       >
       <v-card class="pa-5">
         <v-card-title class="d-flex justify-space-between">
-          <h2>Editeaza doctor</h2>
+          <h2>Editeaza pachet</h2>
           <v-icon icon="fas fa-times" @click="editDialog=false"></v-icon>
         </v-card-title>
         <v-card-text>
-          <v-form ref="form">
-            <v-row>
-              <v-col cols="6">
-                <v-text-field
-                  v-model="payload.nume"
-                  label="Nume"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field
-                  v-model="payload.prenume"
-                  label="Prenume"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field
-                  v-model="payload.specializare"
-                  label="Specializare"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field
-                  v-model="payload.adresa"
-                  label="Adresa"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field
-                  v-model="payload.telefon"
-                  label="Telefon"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field
-                  v-model="payload.email"
-                  label="Email"
-                  required
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="6">
-                <v-btn class="btn-primary" elevation="0" rounded="0" block @click="editDialog = false">Anuleaza</v-btn>
-              </v-col>
-              <v-col cols="6">
-                <v-btn block color="primary" rounded="0" elevation="0" @click="editDoctor">Salveaza</v-btn>
-              </v-col>
-            </v-row>
-          </v-form>
+            <v-form ref="form">
+              <v-row>
+                <v-col cols="6">
+                  <v-text-field
+                    v-model="payload.nume"
+                    label="Denumire"
+                    required
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="6">
+                  <v-text-field
+                    v-model="payload.pret"
+                    label="Pret"
+                    required
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-select
+                    multiple
+                    v-model="payload.servicii"
+                    label="servicii"
+                    required
+                    :items="servicii"
+                    item-title="nume"
+                    item-value="id"
+                    @update:modelValue="sumTotal"
+                  ></v-select>
+                </v-col>
+              </v-row>
+            </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="editDialog = false">Anuleaza</v-btn>
+          <v-btn color="primary" text @click="edit">Salveaza</v-btn>
+        </v-card-actions>
+      </v-card>
+      </v-dialog>
+      <v-dialog
+        v-model="infoDialog"
+        width="600"
+      >
+      <v-card class="pa-5">
+        <v-card-title class="d-flex justify-space-between">
+          <h2>Informatii pachet</h2>
+          <div class="c-pointer" @click="infoDialog=false">x</div>
+        </v-card-title>
+        <v-card-text>
+            <v-form ref="form">
+              <v-row>
+                <v-col cols="6">
+                  <v-text-field
+                    v-model="payload.nume"
+                    label="Denumire"
+                    readonly
+                    required
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="6">
+                  <v-text-field
+                    v-model="payload.pret"
+                    label="Pret"
+                    readonly
+                    required
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-select
+                    multiple
+                    v-model="payload.servicii"
+                    label="servicii"
+                    required
+                    :items="servicii"
+                    item-title="nume"
+                    item-value="id"
+                    @update:modelValue="sumTotal"
+                    readonly
+                  ></v-select>
+                </v-col>
+              </v-row>
+            </v-form>
         </v-card-text>
       </v-card>
       </v-dialog>
@@ -128,41 +155,38 @@
   import axios from 'axios'
     export default {
       name: 'Card',
-      props: ['nume', 'prenume', 'id', 'specializare', 'adresa', 'telefon', 'email'],
+      props: ['nume', 'pret', 'serviciiProp', 'id'],
       data() {
         return{
           dialog: false,
           editDialog: false,
+          servicii: [],
+          infoDialog: false,
           payload: {
+            id: this.id,
             nume: this.nume,
-            prenume: this.prenume,
-            specializare: this.specializare,
-            adresa: this.adresa,
-            telefon: this.telefon,
-            email: this.email,
-            
+            pret: this.pret,
+            servicii: this.serviciiProp
           }
         }
       },
-    
+      created() {
+        this.getServicii()
+      },
       methods:{
-        editDoctor(){
-          axios.put('https://psyhelp-api.oldstudioconcept.ro/', {
+        edit(){
+          axios.put('https://psyhelp-api.oldstudioconcept.ro/pachete/', {
               id: this.id,
               nume: this.payload.nume,
-              prenume: this.payload.prenume,
-              specializare: this.payload.specializare,
-              adresa: this.payload.adresa,
-              telefon: this.payload.telefon,
-              email: this.payload.email,
-  
+              pret: this.payload.pret,
+              servicii: this.payload.servicii
           }) .then(() => {
             this.editDialog = false;
             this.$emit('refresh');
           })
         },
-        deleteDoctor(){
-          axios.delete('https://psyhelp-api.oldstudioconcept.ro/staff', {
+        deletePachet(){
+          axios.delete('https://psyhelp-api.oldstudioconcept.ro/pachete/', {
             params:{
               id: this.id
             }
@@ -170,7 +194,15 @@
             this.dialog = false;
             this.$emit('refresh');
           })
-        } 
+        },
+        getServicii() {
+          axios.get('https://psyhelp-api.oldstudioconcept.ro/servicii/no-pagination/')
+          .then((response) => {
+            this.servicii = response.data;
+          }, (error) => {
+            console.log(error);
+          });
+        },
       } 
     }
   </script>

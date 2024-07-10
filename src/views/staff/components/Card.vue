@@ -121,7 +121,7 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field v-model="color" v-mask="mask" hide-details class="ma-0 pa-0" solo>
+              <v-text-field v-model="this.payload.color" v-mask="mask" hide-details class="ma-0 pa-0" solo>
                 <template v-slot:append>
                   <v-menu v-model="menu" top nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
                     <template v-slot:activator="{ on }">
@@ -129,7 +129,7 @@
                     </template>
                     <v-card>
                       <v-card-text class="pa-0">
-                        <v-color-picker v-model="color" flat />
+                        <v-color-picker v-model="this.payload.color" flat />
                       </v-card-text>
                     </v-card>
                   </v-menu>
@@ -155,13 +155,12 @@
 import axios from 'axios'
   export default {
     name: 'Card',
-    props: ['nume', 'prenume', 'id', 'specializare', 'adresa', 'telefon', 'email'],
+    props: ['nume', 'prenume', 'id', 'specializare', 'adresa', 'telefon', 'email', 'color'],
     data() {
       return{
         dialog: false,
         editDialog: false,
         payload: {},
-        color: '#1976D2FF',
         mask: '!#XXXXXXXX',
         menu: false,
         specializari: [
@@ -177,30 +176,29 @@ import axios from 'axios'
       }
     },
     created() {
-      console.log(this.specializare)
       this.payload.nume = this.nume
       this.payload.prenume = this.prenume
       this.payload.specializare = parseInt(this.specializare)
       this.payload.adresa = this.adresa
       this.payload.telefon = this.telefon
       this.payload.email = this.email
+      this.payload.color = this.color
     },
     computed: {
       swatchStyle() {
-        const { color, menu } = this
         return {
-          backgroundColor: color,
+          backgroundColor: this.payload.color,
           cursor: 'pointer',
           height: '30px',
           width: '30px',
-          borderRadius: menu ? '50%' : '4px',
+          borderRadius: this.menu ? '50%' : '4px',
           transition: 'border-radius 200ms ease-in-out'
         }
       },
     },
     methods:{
       editDoctor(){
-        axios.put('https://psyhelp-api.oldstudioconcept.ro/staff', {
+        axios.put('https://psyhelp-api.oldstudioconcept.ro/doctori/', {
             id: this.id,
             nume: this.payload.nume,
             prenume: this.payload.prenume,
@@ -215,7 +213,7 @@ import axios from 'axios'
         })
       },
       deleteDoctor(){
-        axios.delete('https://psyhelp-api.oldstudioconcept.ro/staff', {
+        axios.delete('https://psyhelp-api.oldstudioconcept.ro/doctori/', {
           params:{
             id: this.id
           }

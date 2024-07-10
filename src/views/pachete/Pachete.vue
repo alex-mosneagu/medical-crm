@@ -8,7 +8,7 @@
         </div>
         <v-row>
           <v-col v-for="pachet in pachete" md="3">
-            <card :nume="pachet.nume" prenume="" :id="pachet.id" :specializare="pachet.pret" email="doctor.email" telefon="doctor.telefon" adresa="doctor.adresa" @refresh="getData"/>
+            <card :nume="pachet.nume" :serviciiProp="pachet.servicii" :id="pachet.id" :pret="pachet.pret" @refresh="getData"/>
           </v-col>
         </v-row>
         <v-pagination

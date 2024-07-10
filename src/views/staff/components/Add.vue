@@ -127,13 +127,10 @@
     },
     methods: {
       save() {
-        axios.post('https://psyhelp-api.oldstudioconcept.ro/staff', this.payload)
-        .then(() => {
-          this.dialog = false;
+        axios.post("https://psyhelp-api.oldstudioconcept.ro/doctori/", this.payload).then(() => {
+          this.dialog = false,
           this.$emit('refresh')
-        }, (error) => {
-          console.log(error);
-        });
+        })
       },
       close() {
         this.dialog = false;

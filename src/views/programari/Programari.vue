@@ -338,6 +338,9 @@
             }
           })
           this.calendarOptions.events = response.data;
+          if(this.$route.query.staff_id){
+            this.calendarOptions.events = this.calendarOptions.events.filter((item) => { return item.staff == this.$route.query.staff_id })
+          }
         })
         axios.get('https://psyhelp-api.oldstudioconcept.ro/evenimente/categorii/')
         .then((response) =>

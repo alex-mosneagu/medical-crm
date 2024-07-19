@@ -3,7 +3,7 @@
 
   <section class="container-hero">
     <navbar />
-    <div class="d-flex align-center justify-space-between mb-4">  
+    <div v-if="$vuetify.display.smAndUp" class="d-flex align-center justify-space-between mb-4">  
       <h5 class="text-primary">Programari</h5>
       <div class="filters d-flex">
         <div class="form-element">
@@ -246,7 +246,7 @@
         calendarOptions: {
           locale: 'ro',
           plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
-          initialView: 'dayGridMonth',
+          initialView: window.innerWidth > 768 ? 'dayGridMonth' : 'timeGridDay',
           headerToolbar: {
             left: 'prev,next today',
             center: 'title',
@@ -483,6 +483,18 @@
 
 
 <style lang="scss">
+  @media all and (max-width: 780px){
+    .fc-toolbar{
+      display: block !important;
+      text-align: center;
+      .fc-toolbar-title{
+        margin: 10px 0px;
+      }
+    }
+    .fc .fc-view-harness{
+      height: 400px !important;
+    }
+  }
   .fc-daygrid-event-harness a{
     padding: 7px 10px;
     font-size: 12px;

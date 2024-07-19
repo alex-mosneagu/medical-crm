@@ -10,10 +10,13 @@
         </div>
         <div class="card-footer">
           <v-row class="align-center">
-            <v-col cols="6">
+            <v-col cols="3">
               <p>{{ date }} RON</p>
             </v-col>
-            <v-col class="text-right" cols="6">
+            <v-col class="text-right" cols="5">
+              <v-btn color="primary" rounded="0" elevation="0" @click="editDialog=true">Editeaza</v-btn>
+            </v-col>
+            <v-col class="text-right" cols="4">
               <v-btn color="primary" rounded="0" elevation="0" @click="deleteDialog=true">Sterge</v-btn>
             </v-col>
           </v-row>
@@ -25,17 +28,64 @@
        >
         <v-card class="pa-5" >
           <v-card-title class="d-flex justify-space-between">
-            <h2>Sterge notificare</h2>
+            <h2>Sterge serviciu</h2>
             <v-icon icon="fas fa-times" @click="deleteDialog=false"></v-icon>
           </v-card-title>
             <v-card-text>
-              <p>Esti sigur ca vrei sa stergi notificare?</p>
+              <p>Esti sigur ca vrei sa stergi serviciu?</p>
               <v-row class="mt-6">
                 <v-col cols="6">
                   <v-btn class="btn-primary" elevation="0" rounded="0" block @click="deleteDialog = false">Nu</v-btn>
                 </v-col>
                 <v-col cols="6">
                   <v-btn block color="primary" rounded="0" elevation="0" @click="deleteNotification">Da</v-btn>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+       </v-dialog>
+       <v-dialog
+       v-model="editDialog"
+       width="600"
+       >
+        <v-card class="pa-5" >
+          <v-card-title class="d-flex justify-space-between">
+            <h2>Editreaza servicul</h2>
+            <v-icon icon="fas fa-times" @click="editDialog=false"></v-icon>
+          </v-card-title>
+            <v-card-text>
+              <v-form ref="form">
+                <v-row>
+                  <v-col cols="6">
+                    <v-text-field
+                      v-model="payload.nume"
+                      label="Nume"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-text-field
+                      type="number"
+                      v-model="payload.pret"
+                      label="Pret"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-textarea 
+                      v-model="payload.descriere"
+                      label="Descriere"
+                      required
+                    ></v-textarea>
+                  </v-col>
+                </v-row>
+              </v-form>
+              <v-row class="mt-6">
+                <v-col cols="6">
+                  <v-btn class="btn-primary" elevation="0" rounded="0" block @click="editDialog = false">Nu</v-btn>
+                </v-col>
+                <v-col cols="6">
+                  <v-btn block color="primary" rounded="0" elevation="0" @click="editServicii">Editeaza</v-btn>
                 </v-col>
               </v-row>
             </v-card-text>
@@ -53,6 +103,12 @@ import axios from 'axios'
     data(){
       return{
         deleteDialog: false,
+        editDialog: false,
+        payload: {
+          nume: this.title,
+          pret: this.date,
+          descriere: this.content,
+        }
       }
     },
     methods:{
@@ -66,6 +122,10 @@ import axios from 'axios'
           this.$emit('refresh');
         })
       },
+      editServicii() {
+        this.editDialog = false;
+        this.$emit('refresh');
+      }
     }
   }
 </script>

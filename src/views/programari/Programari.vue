@@ -287,6 +287,10 @@
     },
     created(){
       this.getData();
+      if(this.$route.query.pacient_id){
+        this.dialog = true
+        this.payload.pacient = this.$route.query.pacient_id
+      }
     },
     methods: {
       save() {

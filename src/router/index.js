@@ -5,6 +5,7 @@ import Programari from '../views/programari/Programari.vue'
 import Staff from '../views/staff/Staff.vue'
 import StaffIstoric from '../views/staff/StaffIstoric.vue'
 import Pacienti from '../views/pacienti/Pacienti.vue'
+import Pacient from '../views/pacienti/Pacient.vue'
 import Profile from '../views/profile/Profile.vue'
 import Notificari from '../views/notificari/Notificari.vue'
 import Servicii from '../views/servicii/Servicii.vue'
@@ -50,6 +51,14 @@ const routes = createRouter({
             path: "/pacienti",
             name: "Pacienti",
             component: Pacienti,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: "/pacient/:id",
+            name: "Pacient",
+            component: Pacient,
             meta: {
                 requiresAuth: true
             }

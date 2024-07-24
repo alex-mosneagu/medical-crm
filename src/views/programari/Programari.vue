@@ -21,6 +21,7 @@
       </div>
     </div>
     <FullCalendar 
+    ref="fullCalendar"
     :options='calendarOptions'
     />
     <v-dialog
@@ -138,7 +139,7 @@
       </v-card-title>
       <v-card-text>
         <p><strong>Status</strong>: <span class="text-red">Neconfirmat</span></p>
-        <p><strong>Interval Programare</strong>: {{ viewData.start }} - {{ viewData.end }}</p>
+        <p><strong>Informatii Pacient</strong>: <span class="c-pointer" @click="infoPacient">Click Aici</span></p>
         <p><strong>Link Confirmare</strong>: <a href="http://localhost:5173/confirma-programarea" target="_blank">Click aici</a></p>
       </v-card-text>
       <v-row class="mt-4">
@@ -172,7 +173,23 @@
           </v-row>
         </v-card-text>
       </v-card>
-    </v-dialog>
+  </v-dialog>
+  <v-dialog
+      v-model="pacientInfo"
+      width="600"
+    >
+    <v-card class="pa-5" >
+      <v-card-title class="d-flex justify-space-between">
+        <h2>Infomatii pacient</h2>
+        <v-icon icon="mdi-close" @click="pacientInfo=false"></v-icon>
+      </v-card-title>
+        <v-card-text>
+          <p>Nume: {{pacient.nume}} {{ pacient.prenume }}</p>
+          <p>Telefon: {{pacient.telefon }}</p>
+          <p>Email: {{pacient.email }}</p>
+        </v-card-text>
+      </v-card>
+  </v-dialog>
   </section>
   <add :hideButton="true" :showDialog="addPacientDialog" @refresh="getData"/>
 </template>
@@ -216,6 +233,8 @@
     data() {
       return{
         dialog: false,
+        pacientInfo: false,
+        pacient: null,
         viewDialog: false,
         stergeEvent: false,
         categorii: [],
@@ -262,16 +281,21 @@
           editable: true,
           select: (arg) => {
             const cal = arg.view.calendar;
-            cal.unselect();
-            cal.addEvent({
-              title: 'New Event',
-              start: arg.start,
-              end: arg.end,
-              allDay: false,
-              backgroundColor: '#ccc',
-              borderColor: '#ccc'
-            });
-            this.addEvent(arg);
+            if(arg.view.type == 'dayGridMonth'){
+              cal.unselect();
+              this.changeView(arg);
+            }else{
+              cal.unselect();
+              cal.addEvent({
+                title: 'New Event',
+                start: arg.start,
+                end: arg.end,
+                allDay: false,
+                backgroundColor: '#ccc',
+                borderColor: '#ccc'
+              });
+              this.addEvent(arg);
+            }
           },
           eventClick: (arg) => {
             this.viewEvent(arg);
@@ -311,6 +335,12 @@
         this.dialog= false
         this.getData();
       },  
+      changeView(data) {
+        this.$refs.fullCalendar.getApi().changeView('timeGrid', {
+          start: data.startStr,
+          end: data.endStr
+        });
+      },
       addEvent(data) {
         let pacientiTemp = {
           id: 0,
@@ -328,6 +358,12 @@
         }
         this.payload.allDay = false
       },
+      infoPacient() {
+        const eveniment = this.calendarOptions.events.find((item) => { return item.id == this.viewData.id })
+        const pacient = this.pacienti.find((item) => { return item.id == eveniment.pacient })
+        this.pacient = pacient
+        this.pacientInfo = true
+      },
       getData(){
         axios.get('https://psyhelp-api.oldstudioconcept.ro/evenimente/')
         .then((response) => {
@@ -336,9 +372,13 @@
               item.backgroundColor = 'red'
               item.borderColor = 'red'
             }
+            if(item.allDay == 0){
+              item.allDay = false
+            }
           })
           this.calendarOptions.events = response.data;
           if(this.$route.query.staff_id){
+            this.staffFilter = this.$route.query.staff_id
             this.calendarOptions.events = this.calendarOptions.events.filter((item) => { return item.staff == this.$route.query.staff_id })
           }
         })
@@ -468,6 +508,9 @@
             }
           })
           .then((response) => {
+            if(response.data.message == 'No data found'){
+              return false;
+            }
             response.data.forEach((item) => {
               if(item.isConfirmed == 0){
                 item.backgroundColor = 'red'

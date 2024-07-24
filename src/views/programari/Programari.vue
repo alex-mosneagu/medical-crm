@@ -138,13 +138,14 @@
         <v-icon icon="mdi-close" @click="viewDialog= false"></v-icon>
       </v-card-title>
       <v-card-text>
-        <p><strong>Status</strong>: <span class="text-red">Neconfirmat</span></p>
+        <p><strong>Status</strong>: <span v-if="viewData.isConfirmed == 0" class="text-red">Neconfirmat</span> <span v-else class="text-green">Confirmat</span></p>
         <p><strong>Informatii Pacient</strong>: <span class="c-pointer" @click="infoPacient">Click Aici</span></p>
         <p><strong>Link Confirmare</strong>: <a href="http://localhost:5173/confirma-programarea" target="_blank">Click aici</a></p>
       </v-card-text>
       <v-row class="mt-4">
         <v-col cols="6">
-          <v-btn class="btn-primary" elevation="0" rounded="0" block @click="close">Editeaza</v-btn>
+          <v-btn v-if="viewData.isConfirmed == 0" class="btn-primary" elevation="0" rounded="0" block @click="confirmEvent">Confirma</v-btn>
+          <v-btn v-else class="btn-primary" elevation="0" rounded="0" block @click="declineEvent">Anuleaza</v-btn>
         </v-col>
         <v-col cols="6">
           <v-btn color="primary" elevation="0" rounded="0" block @click="stergeEvent= true">Sterge</v-btn>
@@ -437,11 +438,32 @@
           console.log(error);
         });
       },
+      confirmEvent() {
+        axios.post('https://psyhelp-api.oldstudioconcept.ro/evenimente/confirma/',
+        {
+            id: this.viewData.id
+        }).then(() =>{
+          this.viewDialog = false
+          this.stergeEvent = false
+          this.getData()
+        })
+      },
+      declineEvent() {
+        axios.post('https://psyhelp-api.oldstudioconcept.ro/evenimente/anuleaza/',
+        {
+            id: this.viewData.id
+        }).then(() =>{
+          this.viewDialog = false
+          this.stergeEvent = false
+          this.getData()
+        })
+      },
       viewEvent(data){
         this.viewData.title = data.event.title
         this.viewData.start = data.event.startStr
         this.viewData.end = data.event.endStr
         this.viewData.id = data.event.id
+        this.viewData.isConfirmed = data.event.extendedProps.isConfirmed
         this.viewDialog = true
       },
       deleteEvent(){

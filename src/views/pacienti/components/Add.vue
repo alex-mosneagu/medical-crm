@@ -69,7 +69,7 @@
           nume: null,
           prenume: null,
           adresa: null,
-          telefon: null,
+          telefon: '+40',
           email: null,
         },
         hideAddButton: this.hideButton ?? false

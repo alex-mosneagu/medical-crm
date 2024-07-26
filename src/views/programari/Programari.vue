@@ -133,13 +133,13 @@
       v-model="viewDialog"
     >
     <v-card class="pa-5">
-      <v-card-title class="d-flex justify-space-between">
+      <v-card-title class="d-flex justify-space-between flex-wrap">
         <h2>{{ viewData.title }}</h2>
         <v-icon icon="mdi-close" @click="viewDialog= false"></v-icon>
       </v-card-title>
       <v-card-text>
-        <p><strong>Status</strong>: <span v-if="viewData.isConfirmed == 0" class="text-red">Neconfirmat</span> <span v-else class="text-green">Confirmat</span></p>
-        <p><strong>Informatii Pacient</strong>: <span class="c-pointer" @click="infoPacient">Click Aici</span></p>
+        <p class="mb-4"><strong>Status</strong>: <span v-if="viewData.isConfirmed == 0" class="text-red">Neconfirmat</span> <span v-else class="text-green">Confirmat</span></p>
+        <p class="mb-4"><strong>Informatii Pacient</strong>: <span class="c-pointer link-like" @click="infoPacient">Click Aici</span></p>
         <p><strong>Link Confirmare</strong>: <a href="http://localhost:5173/confirma-programarea" target="_blank">Click aici</a></p>
       </v-card-text>
       <v-row class="mt-4">
@@ -267,6 +267,7 @@
           locale: 'ro',
           plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
           initialView: window.innerWidth > 768 ? 'dayGridMonth' : 'timeGridDay',
+          weekends: false,
           headerToolbar: {
             left: 'prev,next today',
             center: 'title',
@@ -299,7 +300,28 @@
             }
           },
           eventClick: (arg) => {
-            this.viewEvent(arg);
+            if(arg.view.type == 'dayGridMonth'){
+              // Create a Date object
+              let startdate = new Date(arg.event.start);
+
+              // Extract the day, month, and year
+              let startday = String(startdate.getDate()).padStart(2, '0');  // Pad with leading zero if needed
+              let startmonth = String(startdate.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+              let startyear = startdate.getFullYear();
+
+              // Format as DD-MM-YYYY
+              let startStr = `${startyear}-${startmonth}-${startday}`;
+              let endStr = `${startyear}-${startmonth}-${startday}`;
+              let data = {
+                startStr: null,
+                endStr: null
+              }
+              data.startStr = startStr
+              data.endStr = endStr
+              this.changeView(data);
+            }else{
+              this.viewEvent(arg);
+            }
           },
           eventDrop: (arg) => {
             alert(arg.event.title + " was dropped on " + arg.event.start);
@@ -647,5 +669,12 @@
         border-radius: 25px;
       }
     }
+  }
+
+  a{
+    color: #F17422
+  }
+  .link-like{
+    color: #F17422
   }
 </style>

@@ -50,7 +50,7 @@
        >
         <v-card class="pa-5" >
           <v-card-title class="d-flex justify-space-between">
-            <h2>Editreaza servicul</h2>
+            <h2>Editeaza servicul</h2>
             <v-icon icon="fas fa-times" @click="editDialog=false"></v-icon>
           </v-card-title>
             <v-card-text>
@@ -105,6 +105,7 @@ import axios from 'axios'
         deleteDialog: false,
         editDialog: false,
         payload: {
+          id: this.id,
           nume: this.title,
           pret: this.date,
           descriere: this.content,
@@ -123,8 +124,10 @@ import axios from 'axios'
         })
       },
       editServicii() {
-        this.editDialog = false;
-        this.$emit('refresh');
+        axios.post('https://psyhelp-api.oldstudioconcept.ro/servicii/edit/', this.payload).then(() => {
+          this.editDialog = false;
+          this.$emit('refresh');
+        })
       }
     }
   }

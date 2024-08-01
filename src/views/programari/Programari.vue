@@ -264,6 +264,7 @@
           pachet: false
         },
         calendarOptions: {
+          selectLongPressDelay: 100,
           locale: 'ro',
           plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
           initialView: window.innerWidth > 768 ? 'dayGridMonth' : 'timeGridDay',

@@ -140,7 +140,7 @@
       <v-card-text>
         <p class="mb-4"><strong>Status</strong>: <span v-if="viewData.isConfirmed == 0" class="text-red">Neconfirmat</span> <span v-else class="text-green">Confirmat</span></p>
         <p class="mb-4"><strong>Informatii Pacient</strong>: <span class="c-pointer link-like" @click="infoPacient">Click Aici</span></p>
-        <p><strong>Link Confirmare</strong>: <a :href="'http://localhost:5173/confirma-programarea/' + viewData.id" target="_blank">Click aici</a></p>
+        <p><strong>Link Confirmare</strong>: <a :href="'/confirma-programarea/' + viewData.id" target="_blank">Click aici</a></p>
       </v-card-text>
       <v-row class="mt-4">
         <v-col cols="6">

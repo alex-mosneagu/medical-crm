@@ -140,7 +140,7 @@
       <v-card-text>
         <p class="mb-4"><strong>Status</strong>: <span v-if="viewData.isConfirmed == 0" class="text-red">Neconfirmat</span> <span v-else class="text-green">Confirmat</span></p>
         <p class="mb-4"><strong>Informatii Pacient</strong>: <span class="c-pointer link-like" @click="infoPacient">Click Aici</span></p>
-        <p><strong>Link Confirmare</strong>: <a href="http://localhost:5173/confirma-programarea" target="_blank">Click aici</a></p>
+        <p><strong>Link Confirmare</strong>: <a :href="'http://localhost:5173/confirma-programarea/' + viewData.id" target="_blank">Click aici</a></p>
       </v-card-text>
       <v-row class="mt-4">
         <v-col cols="6">
@@ -267,7 +267,7 @@
           selectLongPressDelay: 100,
           locale: 'ro',
           plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
-          initialView: window.innerWidth > 768 ? 'dayGridMonth' : 'timeGridDay',
+          initialView: window.innerWidth > 768 ? 'dayGridMonth' : 'dayGridMonth',
           weekends: false,
           headerToolbar: {
             left: 'prev,next today',
@@ -661,10 +661,24 @@
   .filters{
     gap: 10px;
     .form-element{
+      label{
+        display: block;
+        margin-bottom: 5px;
+        font-size: 14px;
+        margin-left: 10px;
+      }
       select{
         border: 1px solid silver;
         padding-left: 15px;
         min-width: 150px;
+        height: 40px;
+        font-size: 14px;
+        border-radius: 25px;
+      }
+      input{
+        border: 1px solid silver;
+        padding: 0px 15px;
+        min-width: 180px;
         height: 40px;
         font-size: 14px;
         border-radius: 25px;

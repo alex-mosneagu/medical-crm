@@ -4,6 +4,23 @@
   <section class="container-hero">
     <navbar />
     <h5 class="text-primary mb-4">Istoric Doctor</h5>
+    <div class="filters d-flex">
+      <div class="form-element">
+        <label for="">De la</label>
+        <input type="date">
+      </div>
+      <div class="form-element">
+        <label for="">Pana la</label>
+        <input type="date">
+      </div>
+      <div class="form-element">
+        <label for="">Serviciu</label>
+        <select v-model="serviciuFilter" name="serviciuFilter" id="serviciuFilter" @change="getEventsFilter">
+          <option value="0">Toate Serviciile</option>
+          <option v-for="item in servicii" :value="item.id">{{ item.nume }}</option>
+        </select>
+      </div>
+    </div>
     <v-table>
       <thead>
         <tr>
@@ -17,7 +34,7 @@
         <tr>
           <td>1</td>
           <td>Mosneagu Alex</td>
-          <td>Test 1</td>
+          <td>CDP</td>
           <td>29/06/2024 11:00:00</td>
         </tr>
       </tbody>
@@ -55,6 +72,7 @@
         pagination: null,
         page: 1,
         take: 8,
+        servicii: [],
       }
     },
     created() {
@@ -82,6 +100,19 @@
         .then((response) => {
           this.doctori = response.data.paginatedResults;
           this.pagination = Math.ceil(response.data.total / this.take);
+        }, (error) => {
+          console.log(error);
+        });
+        axios.get('https://psyhelp-api.oldstudioconcept.ro/servicii/',
+        {
+          params:{
+            skip: 0,
+            take: 200,
+          }
+        }
+        )
+        .then((response) => {
+          this.servicii = response.data.paginatedResults;
         }, (error) => {
           console.log(error);
         });

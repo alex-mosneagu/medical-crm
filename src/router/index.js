@@ -17,14 +17,6 @@ const routes = createRouter({
     routes: [
         {
             path: "/",
-            name: "Dashboard",
-            component: Dashboard,
-            meta: {
-                requiresAuth: true
-            }
-        },
-        {
-            path: "/programari",
             name: "Programari",
             component: Programari,
             meta: {
@@ -109,7 +101,7 @@ const routes = createRouter({
             component: Login
         },
         {
-            path: "/confirma-programarea",
+            path: "/confirma-programarea/:id",
             name: "ConfirmaProgramarea",
             component: ConfirmaProgramarea
         },

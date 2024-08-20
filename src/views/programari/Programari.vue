@@ -419,6 +419,9 @@
         })
         .then((response) => {
           this.pacienti = response.data.paginatedResults;
+          this.pacienti.map((item) => {
+            item.nume = item.nume + ' ' + item.prenume
+          })
         })
         axios.get('https://psyhelp-api.oldstudioconcept.ro/servicii/',
         {

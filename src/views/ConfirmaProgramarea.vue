@@ -9,13 +9,11 @@
         <v-col cols="6">
           <h4 class="mb-4">Doctor</h4>
           <p class="mb-2"><strong>Nume</strong>: {{ payload?.doctor_name }}</p>
-          <p class="mb-6"><strong>Serviciul</strong>: {{ payload?.serviciu_name }}</p>
           <v-btn v-if="payload?.isConfirmed == 0" @click="confirmaEveniment" color="primary" class="text-normal w-100" elevation="0">Confirma</v-btn>
         </v-col>
         <v-col cols="6">
           <h4 class="mb-4">Pacient</h4>
           <p class="mb-2"><strong>Nume</strong>: {{ payload?.pacient_name }}</p>
-          <p class="mb-6">&nbsp;</p>
           <v-btn v-if="payload?.isConfirmed == 0" @click="anuleazaEveniment" color="secondary" class="text-normal w-100" elevation="0">Anuleaza</v-btn>
         </v-col>
       </v-row>

@@ -72,7 +72,7 @@
                   item-value="id"
                   @input="checkIfAddPacient"
                 ></v-autocomplete>
-                <v-select
+                <v-autocomplete
                   v-if="payload.categorie != 3 && !payload.pachet"
                   v-model="payload.serviciu"
                   label="Serviciu"
@@ -80,7 +80,7 @@
                   :items="servicii"
                   item-title="nume"
                   item-value="id"
-                ></v-select>
+                ></v-autocomplete>
                 <v-select
                   v-if="payload.categorie != 3 && payload.pachet"
                   v-model="payload.serviciu"

@@ -9,16 +9,62 @@
         <v-col cols="6">
           <h4 class="mb-4">Doctor</h4>
           <p class="mb-2"><strong>Nume</strong>: {{ payload?.doctor_name }}</p>
-          <v-btn v-if="payload?.isConfirmed == 0" @click="confirmaEveniment" color="primary" class="text-normal w-100" elevation="0">Confirma</v-btn>
+          <v-btn v-if="payload?.isConfirmed == 0" @click="confirmDialog = true" color="primary" class="text-normal w-100" elevation="0">Confirma</v-btn>
         </v-col>
         <v-col cols="6">
           <h4 class="mb-4">Pacient</h4>
           <p class="mb-2"><strong>Nume</strong>: {{ payload?.pacient_name }}</p>
-          <v-btn v-if="payload?.isConfirmed == 0" @click="anuleazaEveniment" color="secondary" class="text-normal w-100" elevation="0">Anuleaza</v-btn>
+          <v-btn v-if="payload?.isConfirmed == 0" @click="anuleazaDialog = true" color="secondary" class="text-normal w-100" elevation="0">Anuleaza</v-btn>
         </v-col>
       </v-row>
     </v-card>
   </v-container>
+
+  <v-dialog
+  v-model="confirmDialog"
+  width="600"
+  >
+  <v-card class="pa-5" >
+    <v-card-title class="d-flex justify-space-between">
+      <h2>Confirma programarea</h2>
+      <v-icon icon="fas fa-times" @click="confirmDialog=false"></v-icon>
+    </v-card-title>
+      <v-card-text>
+        <p>Confirma programarea la clinica Psyhelp</p>
+        <v-row class="mt-6">
+          <v-col cols="6">
+            <v-btn class="btn-primary" elevation="0" rounded="0" block @click="confirmDialog = false">Nu</v-btn>
+          </v-col>
+          <v-col cols="6">
+            <v-btn block color="primary" rounded="0" elevation="0" @click="confirmaEveniment">Da</v-btn>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
+
+  <v-dialog
+  v-model="anuleazaDialog"
+  width="600"
+  >
+  <v-card class="pa-5" >
+    <v-card-title class="d-flex justify-space-between">
+      <h2>Anuleaza programarea</h2>
+      <v-icon icon="fas fa-times" @click="anuleazaDialog=false"></v-icon>
+    </v-card-title>
+      <v-card-text>
+        <p>Anuleaza programarea la clinica Psyhelp</p>
+        <v-row class="mt-6">
+          <v-col cols="6">
+            <v-btn class="btn-primary" elevation="0" rounded="0" block @click="anuleazaDialog = false">Nu</v-btn>
+          </v-col>
+          <v-col cols="6">
+            <v-btn block color="primary" rounded="0" elevation="0" @click="anuleazaEveniment">Da</v-btn>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -27,7 +73,9 @@ import axios from "axios";
 export default {
   data() {
     return {
-      payload: null
+      payload: null,
+      confirmDialog: false,
+      anuleazaDialog: false
     }
   },
   created(){
@@ -67,6 +115,7 @@ export default {
           id: this.$route.params.id
       }).then(() => {
         this.getData();
+        this.confirmDialog = false
       })
     },
     anuleazaEveniment() {
@@ -74,6 +123,7 @@ export default {
           id: this.$route.params.id
       }).then(() => {
         this.getData();
+        this.anuleazaDialog = false
       })
     }
   }

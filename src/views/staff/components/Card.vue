@@ -206,7 +206,7 @@ import axios from 'axios'
             adresa: this.payload.adresa,
             telefon: this.payload.telefon,
             email: this.payload.email,
-
+            color: this.payload.color,
         }) .then(() => {
           this.editDialog = false;
           this.$emit('refresh');

@@ -399,6 +399,16 @@
             if(item.allDay == 0){
               item.allDay = false
             }
+            item.display = 'block'
+            if(item.start.includes('T')){
+              let count = 0
+              response.data.forEach((item2) => {
+                if(item.start == item2.start){
+                  count++
+                }
+              })
+              item.className = 'per-line-' + count
+            }
           })
           this.calendarOptions.events = response.data;
           if(this.$route.query.staff_id){
@@ -545,6 +555,7 @@
                 item.backgroundColor = 'red'
                 item.borderColor = 'red'
               }
+              item.eventClassNames = 'test'
             })
             this.calendarOptions.events = response.data;
           })
@@ -564,6 +575,7 @@
                 item.backgroundColor = 'red'
                 item.borderColor = 'red'
               }
+              item.eventClassNames = 'test'
             })
             this.calendarOptions.events = response.data;
           })
@@ -581,6 +593,9 @@
 
 
 <style lang="scss">
+  .test{
+    display: none !important
+  }
   @media all and (max-width: 780px){
     .fc-toolbar{
       display: block !important;
@@ -700,5 +715,33 @@
   }
   .link-like{
     color: #F17422
+  }
+
+  .fc-timegrid-event-harness:has(.per-line-2){
+    width: calc(100% / 2);
+  }
+
+  .fc-timegrid-event-harness:has(.per-line-3){
+    width: calc(100% / 3);
+  }
+
+  .fc-timegrid-event-harness:has(.per-line-4){
+    width: calc(100% / 4);
+  }
+
+  .fc-timegrid-event-harness:has(.per-line-5){
+    width: calc(100% / 5);
+  }
+
+  .fc-timegrid-event-harness:has(.per-line-6){
+    width: calc(100% / 6);
+  }
+
+  .fc-timegrid-event-harness:has(.per-line-7){
+    width: calc(100% / 7);
+  }
+
+  .fc-timegrid-event-harness:has(.per-line-8){
+    width: calc(100% / 8);
   }
 </style>

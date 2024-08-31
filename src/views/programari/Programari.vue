@@ -661,6 +661,12 @@
       border-color: #F17422 !important;
     }
   }
+  .fc .fc-timegrid-slot{
+    height: 60px;
+  }
+  .fc-v-event .fc-event-time{
+    display: none;
+  }
   .filters{
     gap: 10px;
     .form-element{

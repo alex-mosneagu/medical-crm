@@ -88,14 +88,6 @@
             </router-link>
           </div>
           <div class="item">
-            <router-link to="/programari">
-              <div class="icon">
-                <img :src="programariIcon" alt="">
-              </div>
-              <div class="text">Programari</div>
-            </router-link>
-          </div>
-          <div class="item">
             <router-link to="/staff">
               <div class="icon">
                 <img :src="pacientiIcon" alt="">

@@ -340,6 +340,16 @@
         this.dialog = true
         this.payload.pacient = this.$route.query.pacient_id
       }
+      let timeGrid = document.querySelectorAll('.fc-timegrid-slot');
+
+      // Loop through each element in the NodeList
+      timeGrid.forEach(slot => {
+        slot.addEventListener('click', addEventTemp);
+      });
+
+      function addEventTemp(event) {
+        console.log(event);
+      }
     },
     methods: {
       save() {
@@ -366,7 +376,7 @@
           end: data.endStr
         });
       },
-      addEvent(data) {
+      addEvent(data) { 
         let pacientiTemp = {
           id: 0,
           nume: "Adauga Pacient"

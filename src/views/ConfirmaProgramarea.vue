@@ -1,19 +1,15 @@
 <template>
   <v-container>
     <v-card class="pa-5">
-      <h2>Confirma programarea la clinica psyhelp</h2>
+      <h2>Confirma programarea la Clinica PsyHelp</h2>
       <p>Daca aveti probleme cu confirmarea sau anularea programari ne puteti contacta la numarul <a href="tel:+40 774 027 911">+40 774 027 911</a></p>
       <v-divider class="my-5"></v-divider>
-      <h4 class="mb-4"><strong>Data</strong>: {{ formattedDate }} - <strong>Ora</strong>: {{ formattedTime }}</h4>
+      <h3 class="mb-4 text-center"><strong>Data</strong>: {{ formattedDate }} - <strong>Ora</strong>: {{ formattedTime }} - <strong>Doctor</strong>:  {{ payload?.doctor_name }}</h3>
       <v-row>
         <v-col cols="6">
-          <h4 class="mb-4">Doctor</h4>
-          <p class="mb-2"><strong>Nume</strong>: {{ payload?.doctor_name }}</p>
           <v-btn v-if="payload?.isConfirmed == 0" @click="confirmDialog = true" color="primary" class="text-normal w-100" elevation="0">Confirma</v-btn>
         </v-col>
         <v-col cols="6">
-          <h4 class="mb-4">Pacient</h4>
-          <p class="mb-2"><strong>Nume</strong>: {{ payload?.pacient_name }}</p>
           <v-btn v-if="payload?.isConfirmed == 0" @click="anuleazaDialog = true" color="secondary" class="text-normal w-100" elevation="0">Anuleaza</v-btn>
         </v-col>
       </v-row>
@@ -30,7 +26,7 @@
       <v-icon icon="fas fa-times" @click="confirmDialog=false"></v-icon>
     </v-card-title>
       <v-card-text>
-        <p>Confirma programarea la clinica Psyhelp</p>
+        <p>Confirma programarea la Clinica PsyHelp</p>
         <v-row class="mt-6">
           <v-col cols="6">
             <v-btn class="btn-primary" elevation="0" rounded="0" block @click="confirmDialog = false">Nu</v-btn>

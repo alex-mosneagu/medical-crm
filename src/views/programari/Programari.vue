@@ -695,4 +695,14 @@
   .link-like{
     color: #F17422
   }
+  
+  .fc .fc-timegrid-slot{
+    height: 2.6rem;
+  }
+  .fc-timegrid-event{
+    padding: 0px 5px;
+  }
+  .fc-timegrid-event .fc-event-time{
+    display: none
+  }
 </style>

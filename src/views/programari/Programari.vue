@@ -348,7 +348,7 @@
           let serviciuSelectat = this.servicii.find((item) => item.id == this.payload.serviciu)
           this.payload.title = pacientSelectat.nume + " - " + staffSelect.nume + " - " + serviciuSelectat.nume
         }
-        axios.post('https://psyhelp-api.oldstudioconcept.ro/evenimente/', this.payload)
+        axios.post('https://api.clinicapsyhelp.ro//evenimente/', this.payload)
         .then((response) =>{
           this.dialog= false
           this.getData();
@@ -389,7 +389,7 @@
         this.pacientInfo = true
       },
       getData(){
-        axios.get('https://psyhelp-api.oldstudioconcept.ro/evenimente/')
+        axios.get('https://api.clinicapsyhelp.ro//evenimente/')
         .then((response) => {
           response.data.forEach((item) => {
             if(item.isConfirmed == 0){
@@ -406,12 +406,12 @@
             this.calendarOptions.events = this.calendarOptions.events.filter((item) => { return item.staff == this.$route.query.staff_id })
           }
         })
-        axios.get('https://psyhelp-api.oldstudioconcept.ro/evenimente/categorii/')
+        axios.get('https://api.clinicapsyhelp.ro//evenimente/categorii/')
         .then((response) =>
         {
           this.categorii = response.data;
         })
-        axios.get('https://psyhelp-api.oldstudioconcept.ro/pacienti/',{
+        axios.get('https://api.clinicapsyhelp.ro//pacienti/',{
           params:{
             skip: 0,
             take: 100,
@@ -423,7 +423,7 @@
             item.nume = item.nume + ' ' + item.prenume
           })
         })
-        axios.get('https://psyhelp-api.oldstudioconcept.ro/servicii/',
+        axios.get('https://api.clinicapsyhelp.ro//servicii/',
         {
           params:{
             skip: 0,
@@ -436,7 +436,7 @@
         }, (error) => {
           console.log(error);
         });
-        axios.get('https://psyhelp-api.oldstudioconcept.ro/pachete/',
+        axios.get('https://api.clinicapsyhelp.ro//pachete/',
         {
           params:{
             skip: 0,
@@ -450,7 +450,7 @@
           console.log(error);
         });
         
-        axios.get('https://psyhelp-api.oldstudioconcept.ro/doctori/',
+        axios.get('https://api.clinicapsyhelp.ro//doctori/',
         {
           params:{
             skip: 0,
@@ -465,7 +465,7 @@
         });
       },
       confirmEvent() {
-        axios.post('https://psyhelp-api.oldstudioconcept.ro/evenimente/confirma/',
+        axios.post('https://api.clinicapsyhelp.ro//evenimente/confirma/',
         {
             id: this.viewData.id
         }).then(() =>{
@@ -475,7 +475,7 @@
         })
       },
       declineEvent() {
-        axios.post('https://psyhelp-api.oldstudioconcept.ro/evenimente/anuleaza/',
+        axios.post('https://api.clinicapsyhelp.ro//evenimente/anuleaza/',
         {
             id: this.viewData.id
         }).then(() =>{
@@ -493,7 +493,7 @@
         this.viewDialog = true
       },
       deleteEvent(){
-        axios.delete('https://psyhelp-api.oldstudioconcept.ro/evenimente/',
+        axios.delete('https://api.clinicapsyhelp.ro//evenimente/',
         {
           params:{
             id: this.viewData.id
@@ -528,7 +528,7 @@
       getStaff() {
         this.staff = []
         this.payload.staff = null
-        axios.get('https://psyhelp-api.oldstudioconcept.ro/doctori/categorie/', {
+        axios.get('https://api.clinicapsyhelp.ro//doctori/categorie/', {
           params: {
             categorie: this.payload.categorie
           }
@@ -538,7 +538,7 @@
       },
       getEventsFilter() {
         if(this.staffFilter == 0 &&  this.serviciuFilter == 0){
-          axios.get('https://psyhelp-api.oldstudioconcept.ro/evenimente/')
+          axios.get('https://api.clinicapsyhelp.ro//evenimente/')
           .then((response) => {
             response.data.forEach((item) => {
               if(item.isConfirmed == 0){
@@ -549,7 +549,7 @@
             this.calendarOptions.events = response.data;
           })
         }else{
-          axios.get('https://psyhelp-api.oldstudioconcept.ro/evenimente/filtre/',{
+          axios.get('https://api.clinicapsyhelp.ro//evenimente/filtre/',{
             params: {
               staff: this.staffFilter,
               serviciu: this.serviciuFilter

@@ -52,7 +52,7 @@ export default{
       this.getData();
     },
     getData() {
-      axios.get('https://psyhelp-api.oldstudioconcept.ro/servicii/',
+      axios.get('https://api.clinicapsyhelp.ro//servicii/',
       {
         params:{
           skip: (this.page - 1) * this.take,

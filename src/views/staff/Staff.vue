@@ -62,7 +62,7 @@
         this.getData();
       },
       getData() {
-        axios.get('https://psyhelp-api.oldstudioconcept.ro/doctori/',
+        axios.get('https://api.clinicapsyhelp.ro//doctori/',
         {
           params:{
             skip: (this.page - 1) * this.take,

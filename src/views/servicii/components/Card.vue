@@ -114,7 +114,7 @@ import axios from 'axios'
     },
     methods:{
       deleteNotification() {
-        axios.delete('https://psyhelp-api.oldstudioconcept.ro/servicii/', {
+        axios.delete('https://api.clinicapsyhelp.ro//servicii/', {
             params: {
               id: this.id
             }
@@ -124,7 +124,7 @@ import axios from 'axios'
         })
       },
       editServicii() {
-        axios.post('https://psyhelp-api.oldstudioconcept.ro/servicii/edit/', this.payload).then(() => {
+        axios.post('https://api.clinicapsyhelp.ro//servicii/edit/', this.payload).then(() => {
           this.editDialog = false;
           this.$emit('refresh');
         })

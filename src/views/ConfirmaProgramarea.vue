@@ -102,7 +102,7 @@ export default {
   },
   methods: {
     getData() {
-      axios.get('https://psyhelp-api.oldstudioconcept.ro/evenimente/single/', {
+      axios.get('https://api.clinicapsyhelp.ro//evenimente/single/', {
         params: {
           id: this.$route.params.id
         }
@@ -111,7 +111,7 @@ export default {
       })
     },
     confirmaEveniment() {
-      axios.post('https://psyhelp-api.oldstudioconcept.ro/evenimente/confirma/', {
+      axios.post('https://api.clinicapsyhelp.ro//evenimente/confirma/', {
           id: this.$route.params.id
       }).then(() => {
         this.getData();
@@ -119,7 +119,7 @@ export default {
       })
     },
     anuleazaEveniment() {
-      axios.post('https://psyhelp-api.oldstudioconcept.ro/evenimente/anuleaza/', {
+      axios.post('https://api.clinicapsyhelp.ro//evenimente/anuleaza/', {
           id: this.$route.params.id
       }).then(() => {
         this.getData();

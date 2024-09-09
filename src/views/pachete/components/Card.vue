@@ -175,7 +175,7 @@
       },
       methods:{
         edit(){
-          axios.put('https://psyhelp-api.oldstudioconcept.ro/pachete/', {
+          axios.put('https://api.clinicapsyhelp.ro//pachete/', {
               id: this.id,
               nume: this.payload.nume,
               pret: this.payload.pret,
@@ -186,7 +186,7 @@
           })
         },
         deletePachet(){
-          axios.delete('https://psyhelp-api.oldstudioconcept.ro/pachete/', {
+          axios.delete('https://api.clinicapsyhelp.ro//pachete/', {
             params:{
               id: this.id
             }
@@ -196,7 +196,7 @@
           })
         },
         getServicii() {
-          axios.get('https://psyhelp-api.oldstudioconcept.ro/servicii/no-pagination/')
+          axios.get('https://api.clinicapsyhelp.ro//servicii/no-pagination/')
           .then((response) => {
             this.servicii = response.data;
           }, (error) => {

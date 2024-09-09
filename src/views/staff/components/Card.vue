@@ -198,7 +198,7 @@ import axios from 'axios'
     },
     methods:{
       editDoctor(){
-        axios.put('https://api.clinicapsyhelp.ro//doctori/', {
+        axios.put('https://api.clinicapsyhelp.ro/doctori/', {
             id: this.id,
             nume: this.payload.nume,
             prenume: this.payload.prenume,
@@ -206,14 +206,14 @@ import axios from 'axios'
             adresa: this.payload.adresa,
             telefon: this.payload.telefon,
             email: this.payload.email,
-
+            color: this.payload.color,
         }) .then(() => {
           this.editDialog = false;
           this.$emit('refresh');
         })
       },
       deleteDoctor(){
-        axios.delete('https://api.clinicapsyhelp.ro//doctori/', {
+        axios.delete('https://api.clinicapsyhelp.ro/doctori/', {
           params:{
             id: this.id
           }

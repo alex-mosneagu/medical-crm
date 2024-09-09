@@ -89,7 +89,7 @@
         this.getData();
       },
       getData(value) {
-        axios.get('https://api.clinicapsyhelp.ro//doctori/',
+        axios.get('https://api.clinicapsyhelp.ro/doctori/',
         {
           params:{
             skip: (this.page - 1) * this.take,
@@ -103,7 +103,7 @@
         }, (error) => {
           console.log(error);
         });
-        axios.get('https://api.clinicapsyhelp.ro//servicii/',
+        axios.get('https://api.clinicapsyhelp.ro/servicii/',
         {
           params:{
             skip: 0,

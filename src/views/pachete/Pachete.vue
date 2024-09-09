@@ -47,7 +47,7 @@ export default{
   },
   methods: {
     getData() {
-      axios.get('https://api.clinicapsyhelp.ro//pachete/',
+      axios.get('https://api.clinicapsyhelp.ro/pachete/',
       {
         params:{
           skip: (this.page - 1) * this.take,

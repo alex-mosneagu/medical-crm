@@ -61,7 +61,7 @@
       },
       methods: {
         save() {
-          axios.post('https://api.clinicapsyhelp.ro//servicii/', this.payload)
+          axios.post('https://api.clinicapsyhelp.ro/servicii/', this.payload)
           .then((response) => {
             this.dialog = false;
             this.$emit('refresh')

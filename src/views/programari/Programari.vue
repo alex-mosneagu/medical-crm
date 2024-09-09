@@ -139,6 +139,7 @@
       </v-card-title>
       <v-card-text>
         <p class="mb-4"><strong>Status</strong>: <span v-if="viewData.isConfirmed == 0" class="text-red">Neconfirmat</span> <span v-else class="text-green">Confirmat</span></p>
+        <p class="mb-4"><strong>Serviciu</strong>:  {{  viewData.title.split(' - ')[2]  }}</p>
         <p class="mb-4"><strong>Informatii Pacient</strong>: <span class="c-pointer link-like" @click="infoPacient">Click Aici</span></p>
         <p><strong>Link Confirmare</strong>: <a :href="'/confirma-programarea/' + viewData.id" target="_blank">Click aici</a></p>
       </v-card-text>
@@ -339,16 +340,33 @@
         this.dialog = true
         this.payload.pacient = this.$route.query.pacient_id
       }
+      let timeGrid = document.querySelectorAll('.fc-timegrid-slot');
+
+      // Loop through each element in the NodeList
+      timeGrid.forEach(slot => {
+        slot.addEventListener('click', addEventTemp);
+      });
+
+      function addEventTemp(event) {
+        console.log(event);
+      }
     },
     methods: {
       save() {
         if(this.payload.title == null){
           let pacientSelectat = this.pacienti.find((item) => item.id == this.payload.pacient)
           let staffSelect = this.staff.find((item) => item.id == this.payload.staff)
-          let serviciuSelectat = this.servicii.find((item) => item.id == this.payload.serviciu)
+          let serviciuSelectat;
+          if(this.payload.pachet){
+            serviciuSelectat = this.pachete.find((item) => item.id == this.payload.serviciu)
+          }else{
+            serviciuSelectat = this.servicii.find((item) => item.id == this.payload.serviciu)
+          }
+
+
           this.payload.title = pacientSelectat.nume + " - " + staffSelect.nume + " - " + serviciuSelectat.nume
         }
-        axios.post('https://api.clinicapsyhelp.ro//evenimente/', this.payload)
+        axios.post('https://api.clinicapsyhelp.ro/evenimente/', this.payload)
         .then((response) =>{
           this.dialog= false
           this.getData();
@@ -365,7 +383,7 @@
           end: data.endStr
         });
       },
-      addEvent(data) {
+      addEvent(data) { 
         let pacientiTemp = {
           id: 0,
           nume: "Adauga Pacient"
@@ -389,7 +407,8 @@
         this.pacientInfo = true
       },
       getData(){
-        axios.get('https://api.clinicapsyhelp.ro//evenimente/')
+        this.addPacientDialog = false
+        axios.get('https://api.clinicapsyhelp.ro/evenimente/')
         .then((response) => {
           response.data.forEach((item) => {
             if(item.isConfirmed == 0){
@@ -399,6 +418,16 @@
             if(item.allDay == 0){
               item.allDay = false
             }
+            item.display = 'block'
+            if(item.start.includes('T')){
+              let count = 0
+              response.data.forEach((item2) => {
+                if(item.start == item2.start){
+                  count++
+                }
+              })
+              item.className = 'per-line-' + count
+            }
           })
           this.calendarOptions.events = response.data;
           if(this.$route.query.staff_id){
@@ -406,12 +435,12 @@
             this.calendarOptions.events = this.calendarOptions.events.filter((item) => { return item.staff == this.$route.query.staff_id })
           }
         })
-        axios.get('https://api.clinicapsyhelp.ro//evenimente/categorii/')
+        axios.get('https://api.clinicapsyhelp.ro/evenimente/categorii/')
         .then((response) =>
         {
           this.categorii = response.data;
         })
-        axios.get('https://api.clinicapsyhelp.ro//pacienti/',{
+        axios.get('https://api.clinicapsyhelp.ro/pacienti/',{
           params:{
             skip: 0,
             take: 100,
@@ -423,7 +452,7 @@
             item.nume = item.nume + ' ' + item.prenume
           })
         })
-        axios.get('https://api.clinicapsyhelp.ro//servicii/',
+        axios.get('https://api.clinicapsyhelp.ro/servicii/',
         {
           params:{
             skip: 0,
@@ -436,7 +465,7 @@
         }, (error) => {
           console.log(error);
         });
-        axios.get('https://api.clinicapsyhelp.ro//pachete/',
+        axios.get('https://api.clinicapsyhelp.ro/pachete/',
         {
           params:{
             skip: 0,
@@ -450,7 +479,7 @@
           console.log(error);
         });
         
-        axios.get('https://api.clinicapsyhelp.ro//doctori/',
+        axios.get('https://api.clinicapsyhelp.ro/doctori/',
         {
           params:{
             skip: 0,
@@ -465,7 +494,7 @@
         });
       },
       confirmEvent() {
-        axios.post('https://api.clinicapsyhelp.ro//evenimente/confirma/',
+        axios.post('https://api.clinicapsyhelp.ro/evenimente/confirma/',
         {
             id: this.viewData.id
         }).then(() =>{
@@ -475,7 +504,7 @@
         })
       },
       declineEvent() {
-        axios.post('https://api.clinicapsyhelp.ro//evenimente/anuleaza/',
+        axios.post('https://api.clinicapsyhelp.ro/evenimente/anuleaza/',
         {
             id: this.viewData.id
         }).then(() =>{
@@ -493,7 +522,7 @@
         this.viewDialog = true
       },
       deleteEvent(){
-        axios.delete('https://api.clinicapsyhelp.ro//evenimente/',
+        axios.delete('https://api.clinicapsyhelp.ro/evenimente/',
         {
           params:{
             id: this.viewData.id
@@ -528,7 +557,7 @@
       getStaff() {
         this.staff = []
         this.payload.staff = null
-        axios.get('https://api.clinicapsyhelp.ro//doctori/categorie/', {
+        axios.get('https://api.clinicapsyhelp.ro/doctori/categorie/', {
           params: {
             categorie: this.payload.categorie
           }
@@ -538,18 +567,19 @@
       },
       getEventsFilter() {
         if(this.staffFilter == 0 &&  this.serviciuFilter == 0){
-          axios.get('https://api.clinicapsyhelp.ro//evenimente/')
+          axios.get('https://api.clinicapsyhelp.ro/evenimente/')
           .then((response) => {
             response.data.forEach((item) => {
               if(item.isConfirmed == 0){
                 item.backgroundColor = 'red'
                 item.borderColor = 'red'
               }
+              item.eventClassNames = 'test'
             })
             this.calendarOptions.events = response.data;
           })
         }else{
-          axios.get('https://api.clinicapsyhelp.ro//evenimente/filtre/',{
+          axios.get('https://api.clinicapsyhelp.ro/evenimente/filtre/',{
             params: {
               staff: this.staffFilter,
               serviciu: this.serviciuFilter
@@ -564,6 +594,7 @@
                 item.backgroundColor = 'red'
                 item.borderColor = 'red'
               }
+              item.eventClassNames = 'test'
             })
             this.calendarOptions.events = response.data;
           })
@@ -581,6 +612,9 @@
 
 
 <style lang="scss">
+  .test{
+    display: none !important
+  }
   @media all and (max-width: 780px){
     .fc-toolbar{
       display: block !important;
@@ -661,6 +695,12 @@
       border-color: #F17422 !important;
     }
   }
+  .fc .fc-timegrid-slot{
+    height: 60px;
+  }
+  .fc-v-event .fc-event-time{
+    display: none;
+  }
   .filters{
     gap: 10px;
     .form-element{
@@ -695,14 +735,32 @@
   .link-like{
     color: #F17422
   }
-  
-  .fc .fc-timegrid-slot{
-    height: 2.6rem;
+
+  .fc-timegrid-event-harness:has(.per-line-2){
+    width: calc(100% / 2);
   }
-  .fc-timegrid-event{
-    padding: 0px 5px;
+
+  .fc-timegrid-event-harness:has(.per-line-3){
+    width: calc(100% / 3);
   }
-  .fc-timegrid-event .fc-event-time{
-    display: none
+
+  .fc-timegrid-event-harness:has(.per-line-4){
+    width: calc(100% / 4);
+  }
+
+  .fc-timegrid-event-harness:has(.per-line-5){
+    width: calc(100% / 5);
+  }
+
+  .fc-timegrid-event-harness:has(.per-line-6){
+    width: calc(100% / 6);
+  }
+
+  .fc-timegrid-event-harness:has(.per-line-7){
+    width: calc(100% / 7);
+  }
+
+  .fc-timegrid-event-harness:has(.per-line-8){
+    width: calc(100% / 8);
   }
 </style>

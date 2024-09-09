@@ -127,7 +127,7 @@
     },
     methods: {
       save() {
-        axios.post("https://api.clinicapsyhelp.ro//doctori/", this.payload).then(() => {
+        axios.post("https://api.clinicapsyhelp.ro/doctori/", this.payload).then(() => {
           this.dialog = false,
           this.$emit('refresh')
         })

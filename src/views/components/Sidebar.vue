@@ -57,14 +57,6 @@
             <div class="text">Notificari</div>
           </router-link>
         </div>
-        <div class="item">
-          <router-link to="/contracte">
-            <div class="icon">
-              <img :src="programariIcon" alt="">
-            </div>
-            <div class="text">Contracte</div>
-          </router-link>
-        </div>
       </div>
     </section>
     <section v-else>
@@ -125,14 +117,6 @@
                 <img :src="notificariIcon" alt="">
               </div>
               <div class="text">Notificari</div>
-            </router-link>
-          </div>
-          <div class="item">
-            <router-link to="/contracte">
-              <div class="icon">
-                <img :src="programariIcon" alt="">
-              </div>
-              <div class="text">Contracte</div>
             </router-link>
           </div>
         </div>

@@ -368,14 +368,14 @@ export default {
         content: this.content[0]
       }
       if(!this.newDoc){
-        axios.put('https://api.clinicapsyhelp.ro//contracte/', payload )
+        axios.put('https://api.clinicapsyhelp.ro/contracte/', payload )
         .then((response) => {
           console.log(response)
         })
       }
     },
     getData(value){
-      axios.get('https://api.clinicapsyhelp.ro//contracte/')
+      axios.get('https://api.clinicapsyhelp.ro/contracte/')
       .then((response) => {
         this.contracte = response.data
         this.content[0] = response.data[0].content

@@ -356,7 +356,14 @@
         if(this.payload.title == null){
           let pacientSelectat = this.pacienti.find((item) => item.id == this.payload.pacient)
           let staffSelect = this.staff.find((item) => item.id == this.payload.staff)
-          let serviciuSelectat = this.servicii.find((item) => item.id == this.payload.serviciu)
+          let serviciuSelectat;
+          if(this.payload.pachet){
+            serviciuSelectat = this.pachete.find((item) => item.id == this.payload.serviciu)
+          }else{
+            serviciuSelectat = this.servicii.find((item) => item.id == this.payload.serviciu)
+          }
+
+
           this.payload.title = pacientSelectat.nume + " - " + staffSelect.nume + " - " + serviciuSelectat.nume
         }
         axios.post('https://psyhelp-api.oldstudioconcept.ro/evenimente/', this.payload)

@@ -10,6 +10,7 @@
           <th>#</th>
           <th>Staff</th>
           <th>Serviciu</th>
+          <th>Status</th>
           <th>Data</th>
         </tr>
       </thead>
@@ -18,6 +19,7 @@
           <td>1</td>
           <td>Adrian</td>
           <td>Test 1</td>
+          <td>Confirmat</td>
           <td>29/06/2024 11:00:00</td>
         </tr>
       </tbody>

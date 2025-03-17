@@ -11,7 +11,7 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item class="c-pointer" @click="editDialog=true">
+            <v-list-item class="c-pointer" @click="openEditDialog">
               <v-list-item-title>
                 Editeaza
               </v-list-item-title>
@@ -136,6 +136,16 @@ import axios from 'axios';
       }
     },
     methods:{
+      openEditDialog() {
+        this.payload = {
+          nume: this.nume,
+          prenume: this.prenume,
+          adresa: this.adresa,
+          telefon: this.telefon,
+          email: this.email
+        }
+        this.editDialog = true
+      },
       editPacient(){
         axios.put('https://api.clinicapsyhelp.ro/pacienti/', {
           id: this.id,

@@ -2,7 +2,22 @@
   <v-app>
     <v-main>
       <router-view />
-    </v-main> 
+    </v-main>
+    <v-snackbar
+      v-model="snackbar.show"
+      :color="snackbar.color"
+      :timeout="snackbar.timeout"
+    >
+      {{ snackbar.message }}
+      <template v-slot:actions>
+        <v-btn
+          variant="text"
+          @click="snackbar.show = false"
+        >
+          Închide
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -13,6 +28,23 @@
     name: 'Home',
     data() {
       return {
+        snackbar: {
+          show: false,
+          message: '',
+          color: 'success',
+          timeout: 3000
+        }
+      }
+    },
+    mounted() {
+      // In Vue 3, we need to use the mitt instance methods directly
+      // The $root.$on was configured in main.js to use emitter.on
+      if (this.$root && this.$root.$on) {
+        this.$root.$on('notify', (data) => {
+          this.snackbar.message = data.message;
+          this.snackbar.color = data.type === 'error' ? 'error' : 'success';
+          this.snackbar.show = true;
+        });
       }
     }
   }

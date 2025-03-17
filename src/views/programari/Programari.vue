@@ -6,6 +6,17 @@
     <div v-if="$vuetify.display.smAndUp" class="d-flex align-center justify-space-between mb-4">  
       <h5 class="text-primary">Programari</h5>
       <div class="filters d-flex">
+        <v-btn color="primary" class="me-3" elevation="0" rounded="pill" @click="regenereazaCulori">Regenereaza culori</v-btn>
+        <v-autocomplete
+          v-model="pacientiFilter"
+          required
+          :items="pacientiComplet"
+          placeholder="Toti pacienti"
+          item-title="nume"
+          item-value="id"
+          density="compact"
+          @update:modelValue="getEventsFilter"
+          ></v-autocomplete>
         <div class="form-element">
           <select v-model="staffFilter" name="staffFilter" id="staffFilter" @change="getEventsFilter">
             <option value="0">Toti din Staff</option>
@@ -138,7 +149,7 @@
         <v-icon icon="mdi-close" @click="viewDialog= false"></v-icon>
       </v-card-title>
       <v-card-text>
-        <p class="mb-4"><strong>Status</strong>: <span v-if="viewData.isConfirmed == 0" class="text-red">Neconfirmat</span> <span v-else class="text-green">Confirmat</span></p>
+        <p class="mb-4"><strong>Status</strong>: <span v-if="viewData.isConfirmed == 0" class="text-red">Neconfirmat</span> <span v-else-if="viewData.isConfirmed == 1" class="text-green">Confirmat</span> <span v-else-if="viewData.isConfirmed == 2">Anulat</span></p>
         <p class="mb-4"><strong>Serviciu</strong>:  {{  viewData.title.split(' - ')[2]  }}</p>
         <p class="mb-4"><strong>Informatii Pacient</strong>: <span class="c-pointer link-like" @click="infoPacient">Click Aici</span></p>
         <p><strong>Link Confirmare</strong>: <a :href="'/confirma-programarea/' + viewData.id" target="_blank">Click aici</a></p>
@@ -208,6 +219,7 @@
   import Add from '../pacienti/components/Add.vue';
   import Datepicker from '@vuepic/vue-datepicker';
   import '@vuepic/vue-datepicker/dist/main.css';
+import { ar } from 'vuetify/locale'
 
   export default {
     name: 'Programari',
@@ -243,9 +255,11 @@
         pacienti: [],
         staff: [],
         staffComplet: [],
+        pacientiComplet: [],
         servicii: [],
         pachete: [],
         staffFilter: 0,
+        pacientiFilter: null,
         serviciuFilter: 0,
         addPacientDialog: false,
         viewData: {
@@ -326,10 +340,18 @@
             }
           },
           eventDrop: (arg) => {
-            alert(arg.event.title + " was dropped on " + arg.event.start);
+            axios.put('https://api.clinicapsyhelp.ro/evenimente/', {
+              id: arg.event.id,
+              start: arg.event.startStr,
+              end: arg.event.endStr
+            })
           },
           eventResize: (arg) => {
-            alert(arg.event.title + " was resized to " + arg.event.end);
+            axios.put('https://api.clinicapsyhelp.ro/evenimente/', {
+              id: arg.event.id,
+              start: arg.event.startStr,
+              end: arg.event.endStr
+            })
           }
         }
       }
@@ -422,7 +444,7 @@
             if(item.start.includes('T')){
               let count = 0
               response.data.forEach((item2) => {
-                if(item.start == item2.start){
+                if(item.end == item2.end || item.start == item2.start){
                   count++
                 }
               })
@@ -489,6 +511,23 @@
         )
         .then((response) => {
           this.staffComplet = response.data.paginatedResults;
+        }, (error) => {
+          console.log(error);
+        });
+        
+        axios.get('https://api.clinicapsyhelp.ro/pacienti/',
+        {
+          params:{
+            skip: 0,
+            take: 1000,
+          }
+        }
+        )
+        .then((response) => {
+          response.data.paginatedResults.map((item) => {
+            item.nume = item.nume + ' ' + item.prenume
+          })
+          this.pacientiComplet = response.data.paginatedResults;
         }, (error) => {
           console.log(error);
         });
@@ -566,7 +605,7 @@
         })
       },
       getEventsFilter() {
-        if(this.staffFilter == 0 &&  this.serviciuFilter == 0){
+        if(this.staffFilter == 0 &&  this.serviciuFilter == 0 && this.pacientiFilter == null){
           axios.get('https://api.clinicapsyhelp.ro/evenimente/')
           .then((response) => {
             response.data.forEach((item) => {
@@ -574,13 +613,26 @@
                 item.backgroundColor = 'red'
                 item.borderColor = 'red'
               }
-              item.eventClassNames = 'test'
+              if(item.allDay == 0){
+                item.allDay = false
+              }
+              item.display = 'block'
+              if(item.start.includes('T')){
+                let count = 0
+                response.data.forEach((item2) => {
+                  if(item.end == item2.end || item.start == item2.start){
+                    count++
+                  }
+                })
+                item.className = 'per-line-' + count
+              }
             })
             this.calendarOptions.events = response.data;
           })
         }else{
           axios.get('https://api.clinicapsyhelp.ro/evenimente/filtre/',{
             params: {
+              pacient: this.pacientiFilter,
               staff: this.staffFilter,
               serviciu: this.serviciuFilter
             }
@@ -594,8 +646,21 @@
                 item.backgroundColor = 'red'
                 item.borderColor = 'red'
               }
-              item.eventClassNames = 'test'
+              if(item.allDay == 0){
+                item.allDay = false
+              }
+              item.display = 'block'
+              if(item.start.includes('T')){
+                let count = 0
+                response.data.forEach((item2) => {
+                  if(item.end == item2.end || item.start == item2.start){
+                    count++
+                  }
+                })
+                item.className = 'per-line-' + count
+              }
             })
+            this.calendarOptions.events = response.data;
             this.calendarOptions.events = response.data;
           })
         }
@@ -605,6 +670,23 @@
           this.addPacientDialog = true
           this.payload.pacient = null
         }
+      },
+      regenereazaCulori() {
+        axios.get('https://api.clinicapsyhelp.ro/crons/colors.php')
+          .then(() => {
+            this.$root.$emit('notify', {
+              type: 'success',
+              message: 'Culorile au fost regenerate cu succes!'
+            });
+            this.getData();
+          })
+          .catch((error) => {
+            console.error('Error regenerating colors:', error);
+            this.$root.$emit('notify', {
+              type: 'error',
+              message: 'A apărut o eroare la regenerarea culorilor.'
+            });
+          });
       }
     }
   }
@@ -703,6 +785,10 @@
   }
   .filters{
     gap: 10px;
+    .v-autocomplete .v-field{
+      min-width: 180px;
+      font-size: 14px;
+    }
     .form-element{
       label{
         display: block;
@@ -762,5 +848,9 @@
 
   .fc-timegrid-event-harness:has(.per-line-8){
     width: calc(100% / 8);
+  }
+
+  .fc-event-title{
+    font-size: 10px !important;
   }
 </style>

@@ -7,6 +7,7 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
+import mitt from 'mitt'
 
 const myCustomLightTheme = {
   dark: false,
@@ -45,4 +46,11 @@ router.beforeEach((to, from, next) => {
   }
 })
 
-createApp(App).use(router).use(vuetify).mount('#app')
+const app = createApp(App)
+const emitter = mitt()
+
+app.config.globalProperties.$root = {}
+app.config.globalProperties.$root.$emit = emitter.emit
+app.config.globalProperties.$root.$on = emitter.on
+
+app.use(router).use(vuetify).mount('#app')

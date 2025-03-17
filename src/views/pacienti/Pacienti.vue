@@ -3,10 +3,10 @@
 
   <section class="container-hero">
     <navbar />
-    <filters @refresh="changeColumns"/>
+    <filters @refresh="changeColumns" @searchData="searchPacienti"/>
     <h5 class="text-primary mb-4">Pacienti</h5>
     <div class="filters mb-6">
-      <add @refresh="getData"/>
+      <add @refresh="getData" />
     </div>
     <v-row>
       <v-col v-for="pacient in pacienti" sm="12" md="3">
@@ -45,7 +45,8 @@
         pacienti: [],
         pagination: null,
         page: 1,
-        take: 8,
+        take: 32,
+        term: null
       }
     },
     created() {
@@ -66,12 +67,17 @@
           params:{
             skip: (this.page - 1) * this.take,
             take: this.take,
+            term: this.term
           }
         })
         .then((response) => {
           this.pacienti = response.data.paginatedResults;
           this.pagination = Math.ceil(response.data.total / this.take);
         })
+      },
+      searchPacienti(data) {
+        this.term = data
+        this.getData()
       }
     },
   }

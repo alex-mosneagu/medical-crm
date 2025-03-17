@@ -27,15 +27,21 @@
           <th>#</th>
           <th>Pacient</th>
           <th>Serviciu</th>
+          <th>Status</th>
           <th>Data</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>Mosneagu Alex</td>
-          <td>CDP</td>
-          <td>29/06/2024 11:00:00</td>
+        <tr v-for="(item, index) in istoric">
+          <td>{{ index + 1 }}</td>
+          <td>{{ item.pacientNume }} {{ item.pacientPrenume }}</td>
+          <td>
+            <span v-if="item.status == 0">Neconfirmat</span>
+            <span v-if="item.status == 1">Confirmat</span>
+            <span v-if="item.status == 2">Anulat</span>
+          </td>
+          <td>{{ item.serviciuNume }}</td>
+          <td>{{ item?.start }}</td>
         </tr>
       </tbody>
     </v-table>
@@ -68,7 +74,7 @@
     emits: ['refresh'],
     data() {
       return{
-        doctori: [],
+        istoric: [],
         pagination: null,
         page: 1,
         take: 8,
@@ -77,6 +83,7 @@
     },
     created() {
       this.getData();
+      console.log(this.$route.params.id)
     },
     methods: {
       changePage(value){
@@ -89,30 +96,13 @@
         this.getData();
       },
       getData(value) {
-        axios.get('https://api.clinicapsyhelp.ro/doctori/',
-        {
-          params:{
-            skip: (this.page - 1) * this.take,
-            take: this.take,
+        axios.get('https://api.clinicapsyhelp.ro/doctori/istoric/', {
+          params: {
+            id: this.$route.params.id
           }
-        }
-        )
+        })
         .then((response) => {
-          this.doctori = response.data.paginatedResults;
-          this.pagination = Math.ceil(response.data.total / this.take);
-        }, (error) => {
-          console.log(error);
-        });
-        axios.get('https://api.clinicapsyhelp.ro/servicii/',
-        {
-          params:{
-            skip: 0,
-            take: 200,
-          }
-        }
-        )
-        .then((response) => {
-          this.servicii = response.data.paginatedResults;
+          this.istoric = response.data;
         }, (error) => {
           console.log(error);
         });

@@ -21,7 +21,7 @@
           </v-row>
         </v-col>
         <v-col cols="6">
-         <input type="search" placeholder="Search doctors by name or title">
+         <input v-model="searchTerm" type="search" placeholder="Search doctors by name or title" @input="searchData">
         </v-col>
         <v-col cols="3">
           <div class="d-flex">
@@ -56,12 +56,16 @@
   export default {
     data() {
       return{
-        show: 8
+        show: 8,
+        searchTerm: null
       }
     },
     methods: {
       refresh(){
         this.$emit('refresh', this.show)
+      },
+      searchData() {
+        this.$emit('searchData', this.searchTerm)
       }
     }
   }
